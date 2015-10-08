@@ -70,20 +70,16 @@
 - TC will support manual input of data (i.e. 3rd-party apps will not be required).
 - TC will attempt to POST data to the 3rd party apps, allowing users to access their data where and how they would like.
 - TC will provide users ownership of their own data -- users will be able to download their data and delete their accounts (which will fully remove all of their information from TC) at any time.
-- TC will be HIPAA compliant, where applicable. TC will avoid collecting unnecessary identifying information.
+- TC will avoid collecting unnecessary identifying information.
 
 ## Delivery Plan ##
 - **Oct 9**
   - Product Plan
   - App Name + logo
-  - Domain name (selected + purchased)
-  - First draft of site description/goals
-  - Skeleton Rails app + views
-  - PSQL set up
+  - Skeleton Rails app w/ Postgres
   - Google OAuth implemented
   - Google Fit API integrated (GET, POST?)
   - Integrate Food logging
-  - SSL?
 - **Oct 16**
   - Integrate Sleep tracking
   - Come up with overarching front-end design
@@ -92,6 +88,7 @@
 - **Oct 23**
   - Send signup confirmation emails
   - Integrate Mood tracking
+  - SSL?
   - Hosted on EC2, using S3 for storage/delivery
   - Confirm design consistency across the site
 - **Oct 30**
@@ -104,11 +101,6 @@
   + Project presentation, a demo of the application and product plan
   - Finalize user how-to instructions
   - Finalize README
-
-
-  - Each of the data type = its own deliverable.
-  - Then the intersection of the data is the D3 stuff to integrate them.
-  - Ask Jeremy about the D3 book recommendation
 
 ### Goals & Guidelines
 + Use your product plan to lead the functionality development of their application
@@ -156,31 +148,17 @@
   + ~~Internationalization (i18n)~~
   + ~~Live Events (notifications, live updates, think back to Philip's AWS presentation)~~
 
-EC2 won't be a big deal
-D3 - their blog has tons of code examples (they're not super accessible, but technically very deep and complex)
-D3 - doesn't play nicely. Won't use D3 module into a backbone controller. Backbone renders a template, which then contains a standalone D3 implementation.
-
-React (JSX is a nice templating language) handles templates nicely and listens for events and responds by populating the appropriate JSX template. MIGHT play nicely with D3?
-Ember is fun and good but primarily focused at Desktop apps.
-Backbone's templating is clunkier than React's.
-
-Single-page gets obnoxious with OAuth. Consider having several server refreshes for OAuth workflow. If it makes sense to reload a page, then reload it. (Perhaps each namespace is a page reload... but a SPA inside that. Makes each SPA its own module to maintain/test.)
-
 ### Additional Tech Decisions
 - [D3](http://d3js.org/) for data visualizations
-- Support for importing CSV data from a few select sources
-- Support for exporting all user data from my app
+- Support for importing CSV data from a few select sources (Sleep Tracking)
+- Support for exporting all user data from my app (CSV Export)
 - Using [Google Fit](https://fit.google.com/); importing data through [their API](https://developers.google.com/fit/overview).
 - Using [MoodPanda](https://play.google.com/store/apps/details?id=com.MoodPanda); importing data through [their API](http://www.moodpanda.com/api/).
+  - Possible Alternative: [In Flow - Mood Diary](http://www.inflow.mobi/)
 - Using [SleepBot](https://mysleepbot.com/); importing data through their spreadsheet export.
-- Resting HR?
-
-- [In Flow - Mood Diary](http://www.inflow.mobi/)
-
-- Need to be careful with timezones! Unambiguous time capturing. Jawbone and BodyMedia include time zone, Fitbit and Flickr are local time without timezone.
-- Need to support robust, incremental sync. All data since timestamp isn't sufficient if history is ever changed. Jawbone - all APIs take an updated_after param. Fitbit only does 'best-effort' push notifications.
 
 ### Nice-To-Haves
+- Resting HR
 - Provide some basic stats/correlations
 - 2-Factor Auth
 - More sophisticated tracking / more tracking
@@ -189,12 +167,4 @@ Single-page gets obnoxious with OAuth. Consider having several server refreshes 
 - Weather data, from somewhere, using either the user's chosen city or using Google's location data??
 - PeriodTracker app or StrawberryPal?
 - Track amt of time spent relaxing? Type of relaxation activities?
-- Track coffee/tea intake?
-
-
-Cobal's Guide to Game Design -- a lot of it is about visual information theory. ~40pgs.
-
-D3's Page and Blog. Think about 'what is the illustration? what is the visualization that best informs the intersection of this data, from which the user can see causality'
-- Correlation is obvious and should be visible... but causality is harder.
-
-Backend architecture / sevrver. And collecting data. And tests. And seed data.
+- Track coffee/tea intake? (This can be done through the food tracking.)
