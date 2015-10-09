@@ -14,3 +14,6 @@
 
 # Ignore personal notes directory
 /notes/
+
+# FOR SECURITY REASONS! Ignore .env file
+/.env

@@ -1,6 +1,10 @@
 source 'https://rubygems.org'
 ruby '2.2.2'
 
+# Use a .env file to store app secrets.
+# NOTE: This needs to be loaded before other gems.
+gem 'dotenv-rails', groups: [:development, :test]
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
 
@@ -35,6 +39,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+# Use OAuth for login
+gem 'omniauth'
+# Use Google OAuth 2.0
+gem 'omniauth-google-oauth2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
