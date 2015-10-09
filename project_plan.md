@@ -73,6 +73,7 @@
 - TC will avoid collecting unnecessary identifying information.
 
 ## Delivery Plan ##
+- [Trello Board](https://trello.com/b/7lOJAG2C/capstone-project)
 - **Oct 9**
   - Product Plan
   - App Name + logo
@@ -141,9 +142,8 @@
   + Secure Socket Layer (SSL) _lose about a day to this_
     - This is, of course, essential.
   + ~~Service Oriented Architecture (SOA)~~
-    - TODO: Decide if I really want to skip this.
   + ~~Secure Public API (documented)~~
-    - TODO: Decide if I really want to skip this.
+    - This is a nice-to-have.
   + ~~Content Management System (CMS)~~
   + ~~Internationalization (i18n)~~
   + ~~Live Events (notifications, live updates, think back to Philip's AWS presentation)~~
