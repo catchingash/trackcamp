@@ -9,4 +9,7 @@ Rails.application.routes.draw do
     post '/auth/:provider/callback', to: 'sessions#create'
   end
 
+  # FIXME: temp routes
+  get '/activities', to: 'activities#index'
+
 end
