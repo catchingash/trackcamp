@@ -19,6 +19,55 @@ require 'factory_girl'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  config.before(:suite) do
+    # Once you have enabled test mode, all requests
+    # to OmniAuth will be short circuited
+    # to use the mock authentication hash.
+    # A request to /auth/provider will redirect
+    # immediately to /auth/provider/callback.
+
+    OmniAuth.config.test_mode = true
+
+    # The mock_auth configuration allows you to
+    # set per-provider (or default) authentication
+    # hashes to return during testing.
+
+    OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+      provider:"google_oauth2",
+      uid:"12345",
+      info: {
+        name:"Firstname Lastname",
+        email:"lastname11@gmail.com",
+        first_name:"Firstname",
+        last_name:"Lastname",
+        image:"IAmAPhotoURL",
+        urls: {
+          google:"https://plus.google.com/12345"
+        }
+      },
+      credentials: {
+        token:"ya29.somethingsomethingsomething",
+        expires_at:1444951206,
+        expires:true
+      },
+      extra: {
+        id_token:"IAmAJSONWebToken",
+        raw_info: {
+          kind:"plus#personOpenIdConnect",
+          gender:"IAmAGender",
+          sub:"12345",
+          name:"Firstname Lastname",
+          given_name:"Firstname",
+          family_name:"Lastname",
+          profile:"https://plus.google.com/12345",
+          picture:"IAmAPhotoURL",
+          email:"lastname11@gmail.com",
+          email_verified:"true"
+        }
+      }
+    })
+  end
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
