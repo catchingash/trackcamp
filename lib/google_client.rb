@@ -40,7 +40,7 @@ class GoogleClient
     response = http.request(req)
     response = JSON.parse(response.body)
 
-    response['access_token']
+    response['access_token'] # FIXME: if there's an error, everything will break
   end
 
 end
