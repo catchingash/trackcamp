@@ -35,13 +35,6 @@ RSpec.describe User, type: :model do
         expect(user).to be_invalid
         expect(user.errors).to include(:email)
       end
-
-      it 'requires a unique refresh token' do
-        create(:user, refresh_token: 'repeat')
-        user = build(:user, refresh_token: 'repeat')
-        expect(user).to be_invalid
-        expect(user.errors).to include(:refresh_token)
-      end
     end
   end
 end
