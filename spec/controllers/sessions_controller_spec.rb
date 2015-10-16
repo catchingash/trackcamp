@@ -54,6 +54,12 @@ RSpec.describe SessionsController, type: :controller do
         id = User.maximum('id')
         expect(session[:user_id]).to eq(id)
       end
+
+      it 'sets flash[:message]' do
+        get :create, provider: :google_oauth2
+        expect(flash[:message]).not_to be nil
+        expect(flash[:message]).to include :success
+      end
     end
 
     context 'for existing users' do
@@ -75,6 +81,34 @@ RSpec.describe SessionsController, type: :controller do
         id = User.maximum('id')
         expect(session[:user_id]).to eq(id)
       end
+
+      it 'sets flash[:message]' do
+        get :create, provider: :google_oauth2
+        expect(flash[:message]).not_to be nil
+        expect(flash[:message]).to include :success
+      end
     end
+  end
+
+  describe 'DELETE destroy' do
+    before :each do
+      user = create(:user)
+      session[:user_id] = user.id
+      delete :destroy
+    end
+
+    it 'sets flash[:message]' do
+      expect(flash[:message]).not_to be nil
+      expect(flash[:message]).to include :success
+    end
+
+    it 'sets session[:user_id] to nil' do
+      expect(session[:user_id]).to be nil
+    end
+
+    it 'redirects to root path' do
+      expect(response).to redirect_to(root_path)
+    end
+
   end
 end

@@ -8,6 +8,12 @@ class SessionsController < ApplicationController
     redirect_to root_path # FIXME: decide if the root path is the place to send someone after they're logged in.
   end
 
+  def destroy
+    session[:user_id] = nil
+    flash[:message] = { success: "You have signed out!" }
+    redirect_to root_path
+  end
+
   private
 
   def find_or_create_user

@@ -9,6 +9,9 @@ Rails.application.routes.draw do
     post '/auth/:provider/callback', to: 'sessions#create'
   end
 
+  # logout
+  delete '/logout', to: 'sessions#destroy', as: 'logout'
+
   # FIXME: temp routes
   get '/activities', to: 'activities#index'
 
