@@ -1,11 +1,12 @@
 class SessionsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: :create, :if => proc { |c| Rails.env.development? } # this is required for the OmniAuth Developer Strategy
+  skip_before_filter :require_login, only: :create
   before_action :find_or_create_user, only: :create
 
   def create
     session[:user_id] = @user.id
     flash[:message] = { success: "You have logged in!" }
-    redirect_to root_path # FIXME: decide if the root path is the place to send someone after they're logged in.
+    redirect_to user_path(@user.id)
   end
 
   def destroy

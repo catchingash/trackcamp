@@ -39,51 +39,58 @@ RSpec.describe SessionsController, type: :controller do
   describe 'GET create' do
     before { request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2] }
 
+    it 'does not require login' do
+      session[:user_id] = nil
+      get :create, provider: :google_oauth2
+
+      expect(flash[:error]).to be_nil
+      expect(response).not_to redirect_to root_path
+    end
+
+    it 'only creates a new user record when appropriate' do
+      expect{ get :create, provider: :google_oauth2 }.to change(User, :count).by(1) # first time, user is new
+      session[:user_id] = nil
+      expect{ get :create, provider: :google_oauth2 }.not_to change(User, :count) # second time, user is not new
+    end
+
     context 'for new users' do
-      it 'redirects to root path' do
+      let(:id) { User.maximum('id') }
+
+      before :each do
         get :create, provider: :google_oauth2
-        expect(response).to redirect_to(root_path)
       end
 
-      it 'creates a new user' do
-        expect{ get :create, provider: :google_oauth2 }.to change(User, :count).by(1)
+      it 'redirects to user dashboard' do
+        expect(response).to redirect_to user_path(id)
       end
 
       it 'assigns user id to session[:user_id]' do
-        get :create, provider: :google_oauth2
-        id = User.maximum('id')
         expect(session[:user_id]).to eq(id)
       end
 
       it 'sets flash[:message]' do
-        get :create, provider: :google_oauth2
         expect(flash[:message]).not_to be nil
         expect(flash[:message]).to include :success
       end
     end
 
     context 'for existing users' do
+      let(:id) { User.maximum('id') }
+
       before :each do
         create(:user, uid: google_auth_hash[:uid], email: google_auth_hash[:info][:email])
-      end
-
-      it 'redirects to root path' do
         get :create, provider: :google_oauth2
-        expect(response).to redirect_to(root_path)
       end
 
-      it 'does not create a new user' do
-        expect{ get :create, provider: :google_oauth2 }.not_to change(User, :count)
+      it 'redirects to user dashboard' do
+        expect(response).to redirect_to user_path(id)
       end
 
       it 'assigns user id to session[:user_id]' do
-        get :create, provider: :google_oauth2
-        id = User.maximum('id')
         expect(session[:user_id]).to eq(id)
       end
 
       it 'sets flash[:message]' do
-        get :create, provider: :google_oauth2
         expect(flash[:message]).not_to be nil
         expect(flash[:message]).to include :success
       end
@@ -107,8 +114,7 @@ RSpec.describe SessionsController, type: :controller do
     end
 
     it 'redirects to root path' do
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to root_path
     end
-
   end
 end
