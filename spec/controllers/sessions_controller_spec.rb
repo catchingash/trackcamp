@@ -65,12 +65,19 @@ RSpec.describe SessionsController, type: :controller do
       end
 
       it 'assigns user id to session[:user_id]' do
-        expect(session[:user_id]).to eq(id)
+        expect(session[:user_id]).to eq id
       end
 
       it 'sets flash[:message]' do
         expect(flash[:message]).not_to be nil
         expect(flash[:message]).to include :success
+      end
+
+      it 'assigns attributes correctly' do
+        user = User.find(id)
+        expect(user.uid).to eq google_auth_hash[:uid]
+        expect(user.email).to eq google_auth_hash[:info][:email]
+        expect(user.refresh_token).to eq google_auth_hash[:credentials][:token]
       end
     end
 
@@ -78,7 +85,11 @@ RSpec.describe SessionsController, type: :controller do
       let(:id) { User.maximum('id') }
 
       before :each do
-        create(:user, uid: google_auth_hash[:uid], email: google_auth_hash[:info][:email])
+        create(:user,
+          uid: google_auth_hash[:uid],
+          email: google_auth_hash[:info][:email],
+          refresh_token: 'old.token'
+        )
         get :create, provider: :google_oauth2
       end
 
@@ -87,12 +98,16 @@ RSpec.describe SessionsController, type: :controller do
       end
 
       it 'assigns user id to session[:user_id]' do
-        expect(session[:user_id]).to eq(id)
+        expect(session[:user_id]).to eq id
       end
 
       it 'sets flash[:message]' do
         expect(flash[:message]).not_to be nil
         expect(flash[:message]).to include :success
+      end
+
+      it 'updates the refresh token' do
+        expect(User.find(id).refresh_token).to eq google_auth_hash[:credentials][:token]
       end
     end
   end

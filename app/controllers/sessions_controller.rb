@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
     @user = User.create_with(params)
       .find_or_create_by(uid: params[:uid])
 
-    # TODO: Update refresh token
+    @user.update(refresh_token: params[:refresh_token]) # OPTIMIZE: this isn't ideal because new users don't need this to be updated
 
     unless @user.persisted?
       flash[:error] = { error: "We don't know what happened. We're very very sorry! >_>" }
@@ -36,7 +36,7 @@ class SessionsController < ApplicationController
     {
       uid: auth_hash['uid'],
       email: auth_hash['info']['email'],
-      refresh_token: auth_hash['credentials']['refresh_token']
+      refresh_token: auth_hash['credentials']['token']
     }
   end
 end
