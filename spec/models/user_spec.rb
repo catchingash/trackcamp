@@ -11,13 +11,13 @@ RSpec.describe User, type: :model do
       it 'requires a uid' do
         user = build(:user, uid: nil)
         expect(user).to be_invalid
-        expect(user.errors).to include(:uid)
+        expect(user.errors).to include :uid
       end
 
       it 'requires an email' do
         user = build(:user, email: nil)
         expect(user).to be_invalid
-        expect(user.errors).to include(:email)
+        expect(user.errors).to include :email
       end
     end
 
@@ -26,14 +26,14 @@ RSpec.describe User, type: :model do
         create(:user, uid: '1234')
         user = build(:user, uid: '1234')
         expect(user).to be_invalid
-        expect(user.errors).to include(:uid)
+        expect(user.errors).to include :uid
       end
 
       it 'requires a unique email' do
         create(:user, email: 'email@example.com')
         user = build(:user, email: 'email@example.com')
         expect(user).to be_invalid
-        expect(user.errors).to include(:email)
+        expect(user.errors).to include :email
       end
     end
   end
