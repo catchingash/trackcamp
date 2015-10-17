@@ -1,7 +1,6 @@
-require_relative '../../lib/google_client.rb'
-
 class ActivitiesController < ApplicationController
   def index
-    render json: GoogleClient.fit_sessions
+    user = User.find(session[:user_id])
+    render json: user.update_activities
   end
 end
