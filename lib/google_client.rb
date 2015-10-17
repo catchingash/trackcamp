@@ -21,7 +21,37 @@ class GoogleClient
     JSON.parse(response.body)
   end
 
-  # TODO: could cache the auth token
+  def self.fit_segments(refresh_token)
+    auth_token = fetch_new_auth_token(refresh_token)
+    return { error: 'internal error' } if auth_token.nil?
+
+    uri = URI('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate')
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+
+    req_body = {
+      aggregateBy: [
+        {
+          dataSourceId: "derived:com.google.activity.segment:com.google.android.gms:merge_activity_segments"
+        }
+      ],
+      startTimeMillis: 1441065600000, # FIXME: dynamically select start date
+      endTimeMillis: 1444953600000, # FIXME: dynamically select end date
+      bucketByActivitySegment: {
+        minDurationMillis: 300000 # will only return activities 5+ minutes long
+      }
+    }
+    req = Net::HTTP::Post.new(uri.request_uri)
+    req.content_type = 'application/json;encoding=utf-8'
+    req['Authorization'] = 'Bearer ' + auth_token
+    req.body = req_body.to_json
+
+    response = http.request(req)
+    response.code == '200' ? JSON.parse(response.body) : { error: 'internal error' }
+  end
+
+  # OPTIMIZE: could cache the auth token
   def self.fetch_new_auth_token(refresh_token)
     uri = URI('https://www.googleapis.com/oauth2/v3/token')
     params = {
@@ -31,12 +61,12 @@ class GoogleClient
       grant_type: 'refresh_token'
     }
     uri.query = URI.encode_www_form(params)
+
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_PEER
 
     req = Net::HTTP::Post.new(uri.request_uri)
-
     req.content_type = 'application/json;encoding=utf-8'
 
     response = http.request(req)

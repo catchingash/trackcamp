@@ -8,7 +8,11 @@ Rails.application.config.middleware.use OmniAuth::Builder do
                       # I'm not sure why it fails sometimes and not others.
                       # This appears to be an issue with the gem.
                       # See: zquestz/omniauth-google-oauth2#197
-      scope: 'email, https://www.googleapis.com/auth/fitness.activity.read, https://www.googleapis.com/auth/fitness.activity.write',
+      scope: "email, \
+        https://www.googleapis.com/auth/fitness.activity.read, \
+        https://www.googleapis.com/auth/fitness.activity.write, \
+        https://www.googleapis.com/auth/fitness.body.write, \
+        https://www.googleapis.com/auth/fitness.location.write",
       prompt: 'consent'
     }
 end

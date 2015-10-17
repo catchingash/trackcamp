@@ -6,4 +6,8 @@ class User < ActiveRecord::Base
   def fetch_activity_sessions
     GoogleClient.fit_sessions(self.refresh_token)
   end
+
+  def fetch_activity_segments
+    GoogleClient.fit_segments(self.refresh_token)
+  end
 end
