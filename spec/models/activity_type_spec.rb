@@ -8,7 +8,7 @@ RSpec.describe ActivityType, type: :model do
     end
 
     describe 'presence validations' do
-      it 'requires a uid' do
+      it 'requires a name' do
         activity_type = build(:activity_type, name: nil)
         expect(activity_type).to be_invalid
         expect(activity_type.errors).to include :name

@@ -1,6 +1,8 @@
 require_relative '../../lib/google_client.rb'
 
 class User < ActiveRecord::Base
+  has_many :activities, dependent: :destroy
+
   validates :uid, :email, presence: true, uniqueness: true
 
   def fetch_activity_sessions
