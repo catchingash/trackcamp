@@ -47,4 +47,30 @@ RSpec.describe UsersController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    before :each do
+      @user = create(:user)
+      session[:user_id] = @user.id
+    end
+
+    it 'destroys the user from the db' do
+      expect{ delete :destroy, id: @user.id }.to change { User.count }.by(-1)
+    end
+
+    it "destroys the user's associated activities" do
+      2.times{ create(:activity, user: @user) }
+      expect{ delete :destroy, id: @user.id }.to change { Activity.count }.by(-2)
+    end
+
+    it 'logs out the user' do
+      delete :destroy, id: @user.id
+      expect(session[:user_id]).to eq nil
+    end
+
+    it 'redirect_to root path' do
+      delete :destroy, id: @user.id
+      expect(response).to redirect_to root_path
+    end
+  end
 end

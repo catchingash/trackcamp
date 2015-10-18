@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
     redirect_to user_path(@user.id)
   end
 
+  # NOTE: any updates to this method should also be included in users#destroy
   def destroy
     session[:user_id] = nil
     flash[:message] = { success: "You have signed out!" }

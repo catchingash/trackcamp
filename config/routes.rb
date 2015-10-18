@@ -12,8 +12,7 @@ Rails.application.routes.draw do
   # logout
   delete '/logout', to: 'sessions#destroy', as: 'logout'
 
-  # user dashboard
-  resources :users, only: :show
+  resources :users, only: [:show, :destroy]
 
   # FIXME: temp routes
   get '/activities', to: 'activities#index'
