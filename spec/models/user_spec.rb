@@ -37,4 +37,14 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'destroy' do
+    it 'destroys all associated activities records' do
+      user = create(:user)
+      num_activities = 2
+      num_activities.times { create(:activity, user: user) }
+
+      expect{ user.destroy }.to change{ Activity.count }.by(-num_activities)
+    end
+  end
 end
