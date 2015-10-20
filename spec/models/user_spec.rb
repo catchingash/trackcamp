@@ -38,7 +38,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'destroy' do
+  describe '#destroy' do
     it 'destroys all associated activities records' do
       user = create(:user)
       num_activities = 2
@@ -46,5 +46,15 @@ RSpec.describe User, type: :model do
 
       expect{ user.destroy }.to change{ Activity.count }.by(-num_activities)
     end
+  end
+
+  describe '#update_all' do
+    it 'fetches all new Google Fit activities'
+  end
+
+  describe '#activities_by_date' do
+    it 'returns an array of hashes'
+    it 'returns start_time, end_time, activity_type, and data_source for each activity'
+    it "returns all of a user's activities, ordered by start_time"
   end
 end
