@@ -8,9 +8,10 @@ class Activity < ActiveRecord::Base
   validates :activity_type, presence: true # maintains referential integrity
   validates :user, presence: true # maintains referential integrity
 
-  def self.fetch_segments(user_id, refresh_token)
-    activities = GoogleClient.fit_segments(refresh_token)
-    # return nil if activities.error
+  def self.update_new(user_id, google_params)
+    activities = GoogleClient.fit_segments(google_params)
+    return unless activities
+
     activities.each do |activity_params|
       activity = Activity.new(activity_params)
       activity.user_id = user_id

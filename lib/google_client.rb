@@ -23,9 +23,26 @@ class GoogleClient
   #   JSON.parse(response.body)
   # end
 
-  def self.fit_segments(refresh_token)
-    auth_token = fetch_new_auth_token(refresh_token)
-    return { error: 'internal error' } if auth_token.nil?
+  def self.fit_segments(params)
+    end_time = (Time.now.beginning_of_day.to_r * 1000).round
+    if params[:start_time] > end_time
+      begin
+        raise "Start time (#{params[:start_time]}) is after the end time(#{end_time})."
+      rescue StandardError => e
+        puts e
+        return false
+      end
+    end
+
+    auth_token = fetch_new_auth_token(params[:refresh_token])
+    if auth_token.nil?
+      begin
+        raise 'Auth token fetch failed. Refresh token has likely expired.'
+      rescue StandardError => e
+        puts e
+        return false
+      end
+    end
 
     uri = URI('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate')
     http = Net::HTTP.new(uri.host, uri.port)
@@ -38,8 +55,8 @@ class GoogleClient
           dataSourceId: "derived:com.google.activity.segment:com.google.android.gms:merge_activity_segments"
         }
       ],
-      startTimeMillis: 1441065600000, # FIXME: dynamically select start date
-      endTimeMillis: 1444953600000, # FIXME: dynamically select end date
+      startTimeMillis: params[:start_time],
+      endTimeMillis: end_time,
       bucketByActivitySegment: {
         minDurationMillis: 300000 # will only return activities 5+ minutes long
       }
@@ -50,7 +67,16 @@ class GoogleClient
     req.body = req_body.to_json
 
     response = http.request(req)
-    response.code == '200' ? format_segments(JSON.parse(response.body)) : { error: 'internal error' }
+    if response.code == '200'
+      return format_segments(JSON.parse(response.body))
+    else
+      begin
+        raise "Google Fit API error: #{response.body}"
+      rescue StandardError => e
+        puts e
+        return false
+      end
+    end
   end
 
   # OPTIMIZE: could cache the auth token
@@ -83,8 +109,8 @@ class GoogleClient
       data['bucket'].each do |record|
         unless [0, 3, 4].include?(record['activity']) # OPTIMIZE: the 'exclude' list should be defined elsewhere
           activity = {}
-          activity[:start_time] = record['startTimeMillis'][0...-3].to_i # converts to seconds from milliseconds
-          activity[:end_time] = record['endTimeMillis'][0...-3].to_i # converts to seconds from milliseconds
+          activity[:start_time] = record['startTimeMillis'].to_i
+          activity[:end_time] = record['endTimeMillis'].to_i
           activity[:data_source] = record['dataset'][0]['point'][0]['originDataSourceId'][36..-1] # trims 'derived:com.google.activity.segment:'
           activity[:activity_type_id] = record['activity'].to_i
           activities << activity

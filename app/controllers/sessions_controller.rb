@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
   before_action :find_or_create_user, only: :create
 
   def create
+    @user.update_all # OPTIMIZE: it'd be really great if this were asynchronous
     session[:user_id] = @user.id
     flash[:message] = { success: "You have logged in!" }
     redirect_to user_path(@user.id)
