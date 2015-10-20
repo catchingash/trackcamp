@@ -104,6 +104,7 @@ class GoogleClient
   end
 
   def self.format_segments(data)
+    activity_type_map = {}
     activities = []
     if data['bucket']
       data['bucket'].each do |record|
@@ -112,7 +113,9 @@ class GoogleClient
           activity[:start_time] = record['startTimeMillis'].to_i
           activity[:end_time] = record['endTimeMillis'].to_i
           activity[:data_source] = record['dataset'][0]['point'][0]['originDataSourceId'][36..-1] # trims 'derived:com.google.activity.segment:'
-          activity[:activity_type_id] = record['activity'].to_i
+          activity[:activity_type_id] = activity_type_map.fetch(record['activity'].to_i) { |google_id|
+            activity_type_map[google_id] = ActivityType.find_by(googleID: google_id).id
+          }
           activities << activity
         end
       end
