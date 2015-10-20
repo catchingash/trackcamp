@@ -7,8 +7,18 @@ class User < ActiveRecord::Base
     Activity.update_new(self.id, google_params)
   end
 
+  # for use in the API response
   def activities_by_date
-    self.activities.order(:start_time)
+    results = []
+    self.activities.includes(:activity_type).order(:start_time).each do |activity|
+      a = {}
+      a[:start_time] = activity.start_time
+      a[:end_time] = activity.end_time
+      a[:activity_type] = activity.activity_type.name
+      a[:data_source] = activity.data_source
+      results << a
+    end
+    results
   end
 
   private
