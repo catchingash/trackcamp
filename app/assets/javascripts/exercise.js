@@ -1,6 +1,6 @@
-function ExerciseRepository() {
-  this.data = [];
-  // // this.data format example:
+function ActivityRepository() {
+  this.activities = [];
+  // // this.activities format example:
   // [
   //   {"start_time":1442715161266, "end_time":1442715751717, "activity_type":"Calisthenics", "data_source":"com.popularapp.sevenmins:session_activity_segment"},
   //   {"start_time":1442761964988, "end_time":1442762569288, "activity_type":"Calisthenics", "data_source":"com.popularapp.sevenmins:session_activity_segment"},
@@ -9,28 +9,28 @@ function ExerciseRepository() {
   // ]
 }
 
-ExerciseRepository.prototype.toggleExerciseA = function() {
-  var graph = $('.graph.exercise-a');
+ActivityRepository.prototype.toggleGraph = function(letter) {
+  var graph = $('.graph.activity-' + letter);
   // if we've already created the graph, show/hide it
   // else, create the graph
   if (graph.length > 0) {
     graph.toggleClass('hidden');
   } else {
-    this.createExerciseA();
+    this['createGraph' + letter.toUpperCase()]();
   }
 }
 
-ExerciseRepository.prototype.createExerciseA = function() {
+ActivityRepository.prototype.createGraphA = function() {
   // if we already have the data, create the graph
   // else, fetch the data, THEN create the graph
-  if (this.data.length > 0) {
-    var formatted_data = this.formatDataForSharkFins(this.data);
+  if (this.activities.length > 0) {
+    var formatted_data = this.formatDataForSharkFins(this.activities);
     this.sharkFins(formatted_data);
   } else {
     $.ajax({url: '/activities',
       method: 'GET',
       success: function(res) {
-        this.data = res;
+        this.activities = res;
         var formatted_data = this.formatDataForSharkFins(res);
         this.sharkFins(formatted_data);
       }.bind(this)
@@ -38,8 +38,24 @@ ExerciseRepository.prototype.createExerciseA = function() {
   }
 }
 
+ActivityRepository.prototype.createGraphB = function() {
+  if (this.activities.length > 0) {
+    var formatted_data = this.formatDataForLineGraph(this.activities);
+    this.lineGraph(formatted_data);
+  } else {
+    $.ajax({url: '/activities',
+      method: 'GET',
+      success: function(res) {
+        this.activities = res;
+        var formatted_data = this.formatDataForLineGraph(this.activities);
+        this.lineGraph(formatted_data);
+      }.bind(this)
+    });
+  }
+}
+
 // NOTE: see below for example
-ExerciseRepository.prototype.formatDataForSharkFins = function(activities) {
+ActivityRepository.prototype.formatDataForSharkFins = function(activities) {
   var formatted = [];
 
   for (var i = 0; i < activities.length; i++) {
@@ -82,8 +98,8 @@ ExerciseRepository.prototype.formatDataForSharkFins = function(activities) {
   return formatted;
 }
 
-ExerciseRepository.prototype.sharkFins = function(activity_series) {
-  var container = $('<div class="graph exercise exercise-a">');
+ActivityRepository.prototype.sharkFins = function(activity_series) {
+  var container = $('<div class="graph activity activity-a">');
 
   container.highcharts(
     {
@@ -91,18 +107,18 @@ ExerciseRepository.prototype.sharkFins = function(activity_series) {
           zoomType: 'x'
       },
       title: {
-          text: 'Activities'
+          text: 'Activities (Minutes Per Session)'
       },
-      legend: {
-          layout: 'vertical',
-          align: 'left',
-          verticalAlign: 'top',
-          x: 75,
-          y: 50,
-          floating: true,
-          borderWidth: 1,
-          backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-      },
+      // legend: {
+      //     layout: 'vertical',
+      //     align: 'left',
+      //     verticalAlign: 'top',
+      //     x: 75,
+      //     y: 50,
+      //     floating: true,
+      //     borderWidth: 1,
+      //     backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+      // },
       xAxis: {
         title: {
           text: 'Date'
@@ -141,7 +157,99 @@ ExerciseRepository.prototype.sharkFins = function(activity_series) {
   $('.graphs').append(container);
 }
 
-// // result of ExerciseRepository.prototype.formatDataForSharkFins:
+ActivityRepository.prototype.formatDataForLineGraph = function(activities) {
+  var sums = {};
+
+  // collect the total time across all activities for each day
+  for (var i = 0; i < activities.length; i++) {
+    var activity = activities[i];
+    var duration = (activity.end_time - activity.start_time); // in milliseconds
+    var time = new Date(activity.start_time);
+    var day = new Date(time.getFullYear(), time.getMonth(), time.getDate(), 12).valueOf(); // selects noon on that day, in milliseconds since epoch
+
+    if (sums[day]) {
+      sums[day] += duration;
+    } else {
+      sums[day] = duration;
+    }
+  }
+
+  var times = Object.keys(sums);
+  var duration_series = [];
+
+  // format times for the graph: [[date, duration], ... , [date, duration]]
+  for (var i = 0; i < times.length; i++) {
+    var time = times[i];
+    var data_point = [parseInt(time), Math.round(sums[time]/60000)]; // [ date, duration (rounded to the nearest minute) ]
+    duration_series.push(data_point);
+  }
+
+  return duration_series;
+}
+
+ActivityRepository.prototype.lineGraph = function(duration_series) {
+  var container = $('<div class="graph activity activity-b">');
+
+  container.highcharts(
+    {
+      chart: {
+          zoomType: 'x'
+      },
+      title: {
+          text: 'Activities (Minutes Per Day)'
+      },
+      // legend: {
+      //     layout: 'vertical',
+      //     align: 'left',
+      //     verticalAlign: 'top',
+      //     x: 75,
+      //     y: 50,
+      //     floating: true,
+      //     borderWidth: 1,
+      //     backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+      // },
+      xAxis: {
+        title: {
+          text: 'Date'
+        },
+        type: 'datetime',
+        labels: {
+          format: '{value:%a<br>%b %d}'
+        }
+      },
+      yAxis: {
+          title: {
+              text: 'Minutes'
+          },
+          labels: {
+              formatter: function () {
+                  return this.value;
+              }
+          }
+      },
+      tooltip: {
+          headerFormat: '<b>{series.name}</b><br>',
+          pointFormat: '{point.x:%a, %b %d}: {point.y:.0f} min'
+      },
+      plotOptions: {
+          area: {
+              fillOpacity: 0.5
+          }
+      },
+      credits: {
+          enabled: false
+      },
+      series: [{
+        name: 'Duration in minutes',
+        data: duration_series
+      }]
+    }
+  );
+
+  $('.graphs').append(container);
+}
+
+// // result of ActivityRepository.prototype.formatDataForSharkFins:
 // [
 //   {
 //     name: 'Walking',

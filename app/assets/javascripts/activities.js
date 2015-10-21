@@ -2,10 +2,11 @@
 // All this logic will automatically be available in application.js.
 
 $(document).ready(function() {
-  var exerciseRepository = new ExerciseRepository();
+  var activityRepository = new ActivityRepository();
 
-  $('.btn-graph.exercise-a').click(function(event) {
+  $('.btn-graph.activity').click(function(event) {
+    var graph_letter = $(this).val()
     event.preventDefault();
-    exerciseRepository.toggleExerciseA();
+    activityRepository.toggleGraph(graph_letter);
   });
 });
