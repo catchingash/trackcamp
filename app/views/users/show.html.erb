@@ -1,9 +1,17 @@
 <h1>Dashboard</h1>
 
-<%= link_to 'Activities', activities_path %>
-<%= link_to 'Log out', logout_path, method: :delete %>
-<%= link_to 'Permanently delete account and all associated data',
-  user_path(session[:user_id]),
-  method: :delete,
-  data: { confirm: '!!!WARNING!!! THIS IS IRREVERSIBLE! Are you sure?' }
-%>
+<button class='btn btn-graph exercise exercise-a'>Exercise: by activity session</button>
+
+<div class='graphs'></div>
+
+<footer>
+  <nav>
+    <%= link_to 'Activities', activities_path %>
+    <%= link_to 'Log out', logout_path, method: :delete %>
+    <%= link_to 'Permanently delete account and all associated data',
+      user_path(session[:user_id]),
+      method: :delete,
+      data: { confirm: '!!!WARNING!!! THIS IS IRREVERSIBLE! Are you sure?' }
+    %>
+  </nav>
+</footer>

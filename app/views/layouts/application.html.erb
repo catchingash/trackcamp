@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset='UTF-8'>
   <title>Trackcamp</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -8,7 +9,19 @@
 </head>
 <body>
 
-<%= yield %>
+  <%= yield %>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <!-- Note: This version of Highcharts requires jQuery; there is an alt version avail -->
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script>
+    Highcharts.setOptions({
+      global : {
+        // this is for all plots, change Date axis to local timezone
+        useUTC: false
+      }
+    });
+  </script>
 
 </body>
 </html>

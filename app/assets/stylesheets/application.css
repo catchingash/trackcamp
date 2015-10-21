@@ -13,3 +13,12 @@
  *= require_tree .
  *= require_self
  */
+
+.hidden {
+  display: none;
+}
+
+.graph {
+  width:100%;
+  height:400px;
+}
