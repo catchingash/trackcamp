@@ -108,7 +108,7 @@ class GoogleClient
     activities = []
     if data['bucket']
       data['bucket'].each do |record|
-        unless [0, 3, 4].include?(record['activity']) # OPTIMIZE: the 'exclude' list should be defined elsewhere
+        unless [0, 3, 4, 72, 109, 110, 111].include?(record['activity']) # OPTIMIZE: the 'exclude' list should be defined elsewhere
           activity = {}
           activity[:start_time] = record['startTimeMillis'].to_i
           activity[:end_time] = record['endTimeMillis'].to_i
