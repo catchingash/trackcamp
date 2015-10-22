@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy', as: 'logout'
 
   resources :users, only: [:show, :destroy]
+  resources :event_types, only: [:create, :update]
 
   # FIXME: temp routes
   get '/activities', to: 'activities#index'
