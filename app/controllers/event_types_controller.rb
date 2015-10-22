@@ -1,5 +1,4 @@
 class EventTypesController < ApplicationController
-
   def create
     event_type = EventType.new(create_params)
 

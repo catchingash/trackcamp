@@ -33,36 +33,36 @@ RSpec.configure do |config|
     # hashes to return during testing.
 
     OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
-      provider:"google_oauth2",
-      uid:"12345",
+      provider: 'google_oauth2',
+      uid: '12345',
       info: {
-        name:"Firstname Lastname",
-        email:"lastname11@gmail.com",
-        first_name:"Firstname",
-        last_name:"Lastname",
-        image:"IAmAPhotoURL",
+        name: 'Firstname Lastname',
+        email: 'lastname11@gmail.com',
+        first_name: 'Firstname',
+        last_name: 'Lastname',
+        image: 'IAmAPhotoURL',
         urls: {
-          google:"https://plus.google.com/12345"
+          google: 'https://plus.google.com/12345'
         }
       },
       credentials: {
-        token:"ya29.somethingsomethingsomething",
+        token: 'ya29.somethingsomethingsomething',
         expires_at:1444951206,
         expires:true
       },
       extra: {
-        id_token:"IAmAJSONWebToken",
+        id_token: 'IAmAJSONWebToken',
         raw_info: {
-          kind:"plus#personOpenIdConnect",
-          gender:"IAmAGender",
-          sub:"12345",
-          name:"Firstname Lastname",
-          given_name:"Firstname",
-          family_name:"Lastname",
-          profile:"https://plus.google.com/12345",
-          picture:"IAmAPhotoURL",
-          email:"lastname11@gmail.com",
-          email_verified:"true"
+          kind: 'plus#personOpenIdConnect',
+          gender: 'IAmAGender',
+          sub: '12345',
+          name: 'Firstname Lastname',
+          given_name: 'Firstname',
+          family_name: 'Lastname',
+          profile: 'https://plus.google.com/12345',
+          picture: 'IAmAPhotoURL',
+          email: 'lastname11@gmail.com',
+          email_verified: 'true'
         }
       }
     })

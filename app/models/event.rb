@@ -4,9 +4,10 @@ class Event < ActiveRecord::Base
 
   validates :time, :event_type, :user, presence: true # maintains referential integrity
   validates :time, numericality: {
-    greater_than_or_equal_to: 1262304000000 # 1/1/2010
+    greater_than_or_equal_to: 1_262_304_000_000 # 1/1/2010
   }
-  validates :rating, numericality: {
+  validates :rating,
+    numericality: {
       greater_than_or_equal_to: 0,
       less_than_or_equal_to: 10
     },

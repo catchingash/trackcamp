@@ -4,5 +4,4 @@ class EventType < ActiveRecord::Base
 
   validates :user, presence: true # maintains referential integrity
   validates :name, presence: true
-
 end

@@ -1,19 +1,20 @@
 class SessionsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, only: :create, :if => proc { |c| Rails.env.development? } # this is required for the OmniAuth Developer Strategy
-  skip_before_filter :require_login, only: :create
+  # this is required for the OmniAuth Developer Strategy
+  skip_before_action :verify_authenticity_token,
+    only: :create, :if => proc { Rails.env.development? }
+
+  skip_before_action :require_login, only: :create
   before_action :find_or_create_user, only: :create
 
   def create
     @user.update_all # OPTIMIZE: it'd be really great if this were asynchronous
     session[:user_id] = @user.id
-    flash[:message] = { success: "You have logged in!" }
     redirect_to user_path(@user.id)
   end
 
   # NOTE: any updates to this method should also be included in users#destroy
   def destroy
     session[:user_id] = nil
-    flash[:message] = { success: "You have signed out!" }
     redirect_to root_path
   end
 
@@ -21,15 +22,12 @@ class SessionsController < ApplicationController
 
   def find_or_create_user
     params = create_params
-    @user = User.create_with(params)
-      .find_or_create_by(uid: params[:uid])
+    @user = User.create_with(params).find_or_create_by(uid: params[:uid])
 
-    @user.update(refresh_token: params[:refresh_token]) # OPTIMIZE: this isn't ideal because new users don't need this to be updated
+    # OPTIMIZE: this isn't ideal because new users don't need this to be updated
+    @user.update(refresh_token: params[:refresh_token])
 
-    unless @user.persisted?
-      flash[:error] = { error: "We don't know what happened. We're very very sorry! >_>" }
-      redirect_to root_path
-    end
+    redirect_to root_path unless @user.persisted?
   end
 
   def create_params

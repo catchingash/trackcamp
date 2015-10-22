@@ -1,8 +1,6 @@
 require 'net/http'
-require 'json'
 
 class GoogleClient
-
   # # NOTE: this is currently unused because data recorded by Google Fit
   # #       (instead of 3rd-party apps) is not saved in sessions.
   # def self.fit_sessions(refresh_token)
@@ -24,11 +22,11 @@ class GoogleClient
   # end
 
   def self.fit_segments(params)
-    end_time = (Time.now.beginning_of_day.to_r * 1000).round
-    raise "Start time (#{params[:start_time]}) is after the end time(#{end_time})." if params[:start_time] > end_time
+    end_time = (Time.now.beginning_of_day.to_r * 1_000).round
+    raise "Start (#{params[:start_time]}) is after end (#{end_time})." if params[:start_time] > end_time
 
     auth_token = fetch_new_auth_token(params[:refresh_token])
-    raise 'Auth token fetch failed. Refresh token has likely expired.' if auth_token.nil?
+    raise 'Auth token fetch failed. Refresh token expired?' if auth_token.nil?
 
     uri = URI('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate')
     http = Net::HTTP.new(uri.host, uri.port)
@@ -38,13 +36,14 @@ class GoogleClient
     req_body = {
       aggregateBy: [
         {
-          dataSourceId: "derived:com.google.activity.segment:com.google.android.gms:merge_activity_segments"
+          dataSourceId: "derived:com.google.activity.segment:\
+            com.google.android.gms:merge_activity_segments"
         }
       ],
       startTimeMillis: params[:start_time],
       endTimeMillis: end_time,
       bucketByActivitySegment: {
-        minDurationMillis: 300000 # will only return activities 5+ minutes long
+        minDurationMillis: 300_000 # will only return activities 5+ minutes long
       }
     }
     req = Net::HTTP::Post.new(uri.request_uri)
@@ -89,23 +88,24 @@ class GoogleClient
   end
 
   def self.format_segments(data)
-    activity_type_map = {}
+    id_map = {}
     activities = []
     if data['bucket']
       data['bucket'].each do |record|
-        unless [0, 3, 4, 72, 109, 110, 111].include?(record['activity']) # OPTIMIZE: the 'exclude' list should be defined elsewhere
-          activity = {}
-          activity[:start_time] = record['startTimeMillis'].to_i
-          activity[:end_time] = record['endTimeMillis'].to_i
-          activity[:data_source] = record['dataset'][0]['point'][0]['originDataSourceId'][36..-1] # trims 'derived:com.google.activity.segment:'
-          activity[:activity_type_id] = activity_type_map.fetch(record['activity'].to_i) { |google_id|
-            activity_type_map[google_id] = ActivityType.find_by(googleID: google_id).id
-          }
-          activities << activity
+        # OPTIMIZE: the 'exclude' list should be defined elsewhere
+        next if [0, 3, 4, 72, 109, 110, 111].include?(record['activity'])
+
+        activity = {}
+        activity[:start_time] = record['startTimeMillis'].to_i
+        activity[:end_time] = record['endTimeMillis'].to_i
+        # trims 'derived:com.google.activity.segment:'
+        activity[:data_source] = record['dataset'][0]['point'][0]['originDataSourceId'][36..-1]
+        activity[:activity_type_id] = id_map.fetch(record['activity'].to_i) do |google_id|
+          id_map[google_id] = ActivityType.find_by(googleID: google_id).id
         end
+        activities << activity
       end
     end
-    return activities
+    activities
   end
-
 end

@@ -2,36 +2,36 @@ require 'rails_helper'
 
 RSpec.describe SessionsController, type: :controller do
   let (:google_auth_hash) { {
-    provider: "google_oauth2",
-    uid: "12345",
+    provider: 'google_oauth2',
+    uid: '12345',
     info: {
-      name: "Firstname Lastname",
-      email: "lastname11@gmail.com",
-      first_name: "Firstname",
-      last_name: "Lastname",
-      image: "IAmAPhotoURL",
+      name: 'Firstname Lastname',
+      email: 'lastname11@gmail.com',
+      first_name: 'Firstname',
+      last_name: 'Lastname',
+      image: 'IAmAPhotoURL',
       urls: {
-        google: "https://plus.google.com/12345"
+        google: 'https://plus.google.com/12345'
       }
     },
     credentials: {
-      token: "ya29.somethingsomethingsomething",
+      token: 'ya29.somethingsomethingsomething',
       expires_at:1444951206,
       expires:true
     },
     extra: {
-      id_token: "IAmAJSONWebToken",
+      id_token: 'IAmAJSONWebToken',
       raw_info: {
-        kind: "plus#personOpenIdConnect",
-        gender: "IAmAGender",
-        sub: "12345",
-        name: "Firstname Lastname",
-        given_name: "Firstname",
-        family_name: "Lastname",
-        profile: "https://plus.google.com/12345",
-        picture: "IAmAPhotoURL",
-        email: "lastname11@gmail.com",
-        email_verified: "true"
+        kind: 'plus#personOpenIdConnect',
+        gender: 'IAmAGender',
+        sub: '12345',
+        name: 'Firstname Lastname',
+        given_name: 'Firstname',
+        family_name: 'Lastname',
+        profile: 'https://plus.google.com/12345',
+        picture: 'IAmAPhotoURL',
+        email: 'lastname11@gmail.com',
+        email_verified: 'true'
       }
     }
   } }
@@ -49,7 +49,6 @@ RSpec.describe SessionsController, type: :controller do
         session[:user_id] = nil
         get :create, provider: :google_oauth2
 
-        expect(flash[:error]).to be_nil
         expect(response).not_to redirect_to root_path
       end
 
@@ -71,11 +70,6 @@ RSpec.describe SessionsController, type: :controller do
 
         it 'assigns user id to session[:user_id]' do
           expect(session[:user_id]).to eq user.id
-        end
-
-        it 'sets flash[:message]' do
-          expect(flash[:message]).not_to be nil
-          expect(flash[:message]).to include :success
         end
 
         it 'assigns attributes correctly' do
@@ -106,11 +100,6 @@ RSpec.describe SessionsController, type: :controller do
           expect(session[:user_id]).to eq user.id
         end
 
-        it 'sets flash[:message]' do
-          expect(flash[:message]).not_to be nil
-          expect(flash[:message]).to include :success
-        end
-
         it 'updates the refresh token' do
           expect(user.refresh_token).to eq google_auth_hash[:credentials][:token]
         end
@@ -125,11 +114,6 @@ RSpec.describe SessionsController, type: :controller do
       user = create(:user)
       session[:user_id] = user.id
       delete :destroy
-    end
-
-    it 'sets flash[:message]' do
-      expect(flash[:message]).not_to be nil
-      expect(flash[:message]).to include :success
     end
 
     it 'sets session[:user_id] to nil' do

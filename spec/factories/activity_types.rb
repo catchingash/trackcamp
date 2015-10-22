@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :activity_type do
-    name "MyString"
+    name 'MyString'
     sequence(:googleID)
   end
 end
