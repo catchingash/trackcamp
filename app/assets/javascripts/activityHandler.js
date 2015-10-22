@@ -1,61 +1,40 @@
-function ActivityHandler() {
-  this.activities = [];
-  // // this.activities format example:
-  // [
-  //   {"start_time":1442715161266, "end_time":1442715751717, "activity_type":"Calisthenics", "data_source":"com.popularapp.sevenmins:session_activity_segment"},
-  //   {"start_time":1442761964988, "end_time":1442762569288, "activity_type":"Calisthenics", "data_source":"com.popularapp.sevenmins:session_activity_segment"},
-  //   {"start_time":1443625200000, "end_time":1443626400000, "activity_type":"Walking", "data_source":"google.android.apps.fitness:LGE:Nexus 4:ff13169d2dfaa15d:user_input"},
-  //   {"start_time":1443642605208, "end_time":1443645944057, "activity_type":"Walking", "data_source":"com.google.android.gms:LGE:Nexus 4:ff13169d2dfaa15d:from_sample\u003c-derived:com.google.activity.sample:com.google.android.gms:LGE:Nexus 4:ff13169d2dfaa15d:detailed"}
-  // ]
+function ActivityHandler(graphType) {
+  this.formatMethod = this['formatDataFor_' + graphType];
+  this.graphMethod = this[graphType];
+  this.graphContainer = $('<div class="graph activity activity-' + graphType + '">');
+  this.graph = $('.graph.activity-' + graphType);
 }
 
-ActivityHandler.prototype.toggleGraph = function(letter) {
-  var graph = $('.graph.activity-' + letter);
+ActivityHandler.prototype.toggleGraph = function() {
   // if we've already created the graph, show/hide it
   // else, create the graph
-  if (graph.length > 0) {
-    graph.toggleClass('hidden');
+  if (this.graph.length > 0) {
+    this.graph.toggleClass('hidden');
   } else {
-    this['createGraph' + letter.toUpperCase()]();
+    this.createGraph();
   }
 }
 
-ActivityHandler.prototype.createGraphA = function() {
+ActivityHandler.prototype.createGraph = function() {
   // if we already have the data, create the graph
   // else, fetch the data, THEN create the graph
-  if (this.activities.length > 0) {
-    var formatted_data = this.formatDataForSharkFins(this.activities);
-    this.sharkFins(formatted_data);
+  if (dataRepo.activities.length > 0) {
+    var formattedData = this.formatMethod(dataRepo.activities);
+    this.graphMethod(formattedData);
   } else {
     $.ajax({url: '/activities',
       method: 'GET',
       success: function(res) {
-        this.activities = res;
-        var formatted_data = this.formatDataForSharkFins(res);
-        this.sharkFins(formatted_data);
-      }.bind(this)
-    });
-  }
-}
-
-ActivityHandler.prototype.createGraphB = function() {
-  if (this.activities.length > 0) {
-    var formatted_data = this.formatDataForLineGraph(this.activities);
-    this.lineGraph(formatted_data);
-  } else {
-    $.ajax({url: '/activities',
-      method: 'GET',
-      success: function(res) {
-        this.activities = res;
-        var formatted_data = this.formatDataForLineGraph(this.activities);
-        this.lineGraph(formatted_data);
+        dataRepo.activities = res;
+        var formattedData = this.formatMethod(res);
+        this.graphMethod(formattedData);
       }.bind(this)
     });
   }
 }
 
 // NOTE: see below for example
-ActivityHandler.prototype.formatDataForSharkFins = function(activities) {
+ActivityHandler.prototype.formatDataFor_sharkFins = function(activities) {
   var formatted = [];
 
   for (var i = 0; i < activities.length; i++) {
@@ -99,9 +78,7 @@ ActivityHandler.prototype.formatDataForSharkFins = function(activities) {
 }
 
 ActivityHandler.prototype.sharkFins = function(activity_series) {
-  var container = $('<div class="graph activity activity-a">');
-
-  container.highcharts(
+  this.graphContainer.highcharts(
     {
       chart: {
           zoomType: 'x'
@@ -154,10 +131,10 @@ ActivityHandler.prototype.sharkFins = function(activity_series) {
     }
   );
 
-  $('.graphs').append(container);
+  $('.graphs').append(this.graphContainer);
 }
 
-ActivityHandler.prototype.formatDataForLineGraph = function(activities) {
+ActivityHandler.prototype.formatDataFor_lineGraph = function(activities) {
   var sums = {};
 
   // collect the total time across all activities for each day
@@ -188,9 +165,7 @@ ActivityHandler.prototype.formatDataForLineGraph = function(activities) {
 }
 
 ActivityHandler.prototype.lineGraph = function(duration_series) {
-  var container = $('<div class="graph activity activity-b">');
-
-  container.highcharts(
+  this.graphContainer.highcharts(
     {
       chart: {
           zoomType: 'x'
@@ -246,7 +221,7 @@ ActivityHandler.prototype.lineGraph = function(duration_series) {
     }
   );
 
-  $('.graphs').append(container);
+  $('.graphs').append(this.graphContainer);
 }
 
 // // result of ActivityHandler.prototype.formatDataForSharkFins:

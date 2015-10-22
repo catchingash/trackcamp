@@ -2,11 +2,11 @@
 // All this logic will automatically be available in application.js.
 
 $(document).ready(function() {
-  var activityHandler = new ActivityHandler();
-
   $('.btn-graph.activity').click(function(event) {
-    var graph_letter = $(this).val()
     event.preventDefault();
-    activityHandler.toggleGraph(graph_letter);
+
+    var graphType = $(this).val()
+    var activityHandler = new ActivityHandler(graphType);
+    activityHandler.toggleGraph();
   });
 });
