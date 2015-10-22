@@ -25,24 +25,10 @@ class GoogleClient
 
   def self.fit_segments(params)
     end_time = (Time.now.beginning_of_day.to_r * 1000).round
-    if params[:start_time] > end_time
-      begin
-        raise "Start time (#{params[:start_time]}) is after the end time(#{end_time})."
-      rescue StandardError => e
-        puts e
-        return false
-      end
-    end
+    raise "Start time (#{params[:start_time]}) is after the end time(#{end_time})." if params[:start_time] > end_time
 
     auth_token = fetch_new_auth_token(params[:refresh_token])
-    if auth_token.nil?
-      begin
-        raise 'Auth token fetch failed. Refresh token has likely expired.'
-      rescue StandardError => e
-        puts e
-        return false
-      end
-    end
+    raise 'Auth token fetch failed. Refresh token has likely expired.' if auth_token.nil?
 
     uri = URI('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate')
     http = Net::HTTP.new(uri.host, uri.port)
@@ -70,13 +56,12 @@ class GoogleClient
     if response.code == '200'
       return format_segments(JSON.parse(response.body))
     else
-      begin
-        raise "Google Fit API error: #{response.body}"
-      rescue StandardError => e
-        puts e
-        return false
-      end
+      raise "Google Fit API error: #{response.body}"
     end
+
+  rescue StandardError => e
+    Rails.logger.debug e
+    puts e
   end
 
   # OPTIMIZE: could cache the auth token
