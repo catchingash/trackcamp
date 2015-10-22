@@ -46,6 +46,22 @@ RSpec.describe User, type: :model do
 
       expect{ user.destroy }.to change{ Activity.count }.by(-num_activities)
     end
+
+    it 'destroys all associated event records' do
+      user = create(:user)
+      num_events = 2
+      num_events.times { create(:event, user: user) }
+
+      expect{ user.destroy }.to change{ Event.count }.by(-num_events)
+    end
+
+    it 'destroys all associated event type records' do
+      user = create(:user)
+      num_event_types = 2
+      num_event_types.times { create(:event_type, user: user) }
+
+      expect{ user.destroy }.to change{ EventType.count }.by(-num_event_types)
+    end
   end
 
   describe '#update_all' do
