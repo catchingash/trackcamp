@@ -60,18 +60,17 @@ RSpec.describe SessionsController, type: :controller do
       end
 
       context 'for new users' do
-        let(:id) { User.maximum('id') }
+        let(:user) { User.last }
 
-        before :each do
-          get :create, provider: :google_oauth2
-        end
+        before { get :create, provider: :google_oauth2 }
+        after { user.destroy }
 
         it 'redirects to user dashboard' do
-          expect(response).to redirect_to user_path(id)
+          expect(response).to redirect_to user_path(user.id)
         end
 
         it 'assigns user id to session[:user_id]' do
-          expect(session[:user_id]).to eq id
+          expect(session[:user_id]).to eq user.id
         end
 
         it 'sets flash[:message]' do
@@ -80,7 +79,6 @@ RSpec.describe SessionsController, type: :controller do
         end
 
         it 'assigns attributes correctly' do
-          user = User.find(id)
           expect(user.uid).to eq google_auth_hash[:uid]
           expect(user.email).to eq google_auth_hash[:info][:email]
           expect(user.refresh_token).to eq google_auth_hash[:credentials][:token]
@@ -88,9 +86,9 @@ RSpec.describe SessionsController, type: :controller do
       end
 
       context 'for existing users' do
-        let(:id) { User.maximum('id') }
+        let(:user) { User.last }
 
-        before :each do
+        before do
           create(:user,
             uid: google_auth_hash[:uid],
             email: google_auth_hash[:info][:email],
@@ -98,13 +96,14 @@ RSpec.describe SessionsController, type: :controller do
           )
           get :create, provider: :google_oauth2
         end
+        after { user.destroy }
 
         it 'redirects to user dashboard' do
-          expect(response).to redirect_to user_path(id)
+          expect(response).to redirect_to user_path(user.id)
         end
 
         it 'assigns user id to session[:user_id]' do
-          expect(session[:user_id]).to eq id
+          expect(session[:user_id]).to eq user.id
         end
 
         it 'sets flash[:message]' do
@@ -113,7 +112,7 @@ RSpec.describe SessionsController, type: :controller do
         end
 
         it 'updates the refresh token' do
-          expect(User.find(id).refresh_token).to eq google_auth_hash[:credentials][:token]
+          expect(user.refresh_token).to eq google_auth_hash[:credentials][:token]
         end
       end
     end
@@ -122,7 +121,7 @@ RSpec.describe SessionsController, type: :controller do
   end
 
   describe 'DELETE destroy' do
-    before :each do
+    before do
       user = create(:user)
       session[:user_id] = user.id
       delete :destroy
