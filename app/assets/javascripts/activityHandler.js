@@ -1,4 +1,4 @@
-function ActivityRepository() {
+function ActivityHandler() {
   this.activities = [];
   // // this.activities format example:
   // [
@@ -9,7 +9,7 @@ function ActivityRepository() {
   // ]
 }
 
-ActivityRepository.prototype.toggleGraph = function(letter) {
+ActivityHandler.prototype.toggleGraph = function(letter) {
   var graph = $('.graph.activity-' + letter);
   // if we've already created the graph, show/hide it
   // else, create the graph
@@ -20,7 +20,7 @@ ActivityRepository.prototype.toggleGraph = function(letter) {
   }
 }
 
-ActivityRepository.prototype.createGraphA = function() {
+ActivityHandler.prototype.createGraphA = function() {
   // if we already have the data, create the graph
   // else, fetch the data, THEN create the graph
   if (this.activities.length > 0) {
@@ -38,7 +38,7 @@ ActivityRepository.prototype.createGraphA = function() {
   }
 }
 
-ActivityRepository.prototype.createGraphB = function() {
+ActivityHandler.prototype.createGraphB = function() {
   if (this.activities.length > 0) {
     var formatted_data = this.formatDataForLineGraph(this.activities);
     this.lineGraph(formatted_data);
@@ -55,7 +55,7 @@ ActivityRepository.prototype.createGraphB = function() {
 }
 
 // NOTE: see below for example
-ActivityRepository.prototype.formatDataForSharkFins = function(activities) {
+ActivityHandler.prototype.formatDataForSharkFins = function(activities) {
   var formatted = [];
 
   for (var i = 0; i < activities.length; i++) {
@@ -98,7 +98,7 @@ ActivityRepository.prototype.formatDataForSharkFins = function(activities) {
   return formatted;
 }
 
-ActivityRepository.prototype.sharkFins = function(activity_series) {
+ActivityHandler.prototype.sharkFins = function(activity_series) {
   var container = $('<div class="graph activity activity-a">');
 
   container.highcharts(
@@ -157,7 +157,7 @@ ActivityRepository.prototype.sharkFins = function(activity_series) {
   $('.graphs').append(container);
 }
 
-ActivityRepository.prototype.formatDataForLineGraph = function(activities) {
+ActivityHandler.prototype.formatDataForLineGraph = function(activities) {
   var sums = {};
 
   // collect the total time across all activities for each day
@@ -187,7 +187,7 @@ ActivityRepository.prototype.formatDataForLineGraph = function(activities) {
   return duration_series;
 }
 
-ActivityRepository.prototype.lineGraph = function(duration_series) {
+ActivityHandler.prototype.lineGraph = function(duration_series) {
   var container = $('<div class="graph activity activity-b">');
 
   container.highcharts(
@@ -249,7 +249,7 @@ ActivityRepository.prototype.lineGraph = function(duration_series) {
   $('.graphs').append(container);
 }
 
-// // result of ActivityRepository.prototype.formatDataForSharkFins:
+// // result of ActivityHandler.prototype.formatDataForSharkFins:
 // [
 //   {
 //     name: 'Walking',
