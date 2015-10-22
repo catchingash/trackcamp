@@ -3,8 +3,8 @@ require 'json'
 
 class GoogleClient
 
-  # NOTE: this is currently unused because data recorded by Google Fit
-  #       (instead of 3rd-party apps) is not saved in sessions.
+  # # NOTE: this is currently unused because data recorded by Google Fit
+  # #       (instead of 3rd-party apps) is not saved in sessions.
   # def self.fit_sessions(refresh_token)
   #   auth_token = fetch_new_auth_token(refresh_token)
   #   return { error: 'internal error' } if auth_token.nil?
