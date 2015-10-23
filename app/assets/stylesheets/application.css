@@ -14,11 +14,159 @@
  *= require_self
  */
 
+html {
+  height: 100%;
+}
+
+body {
+  background-color: hsla(194, 55%, 97%, 1);
+  font-family: "Open Sans", "Helvetica", Arial, sans-serif;
+  font-size: 15px;
+  font-weight: lighter;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+header a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.btn-graph {
+  box-sizing: border-box;
+  cursor: pointer;
+  margin: 0;
+  padding: 1em;
+  list-style-type: none;
+  width: 100%;
+}
+
+.btn-graph:hover {
+  background-color: hsla(360, 100%, 100%, 1);
+}
+
+footer {
+  clear: both;
+}
+
 .graph {
   height: 300px;
   width: 100%;
 }
 
+.left_menu {
+  background-color: hsla(194, 55%, 97%, 1);
+  border-right: 1px solid hsla(194, 55%, 87%, 1);
+  box-sizing: border-box;
+  margin-top: 45px;
+  float: left;
+  height: 100%;
+  padding: 1em;
+  max-width: 500px;
+  width: 25%;
+}
+
+.left_menu ul {
+  padding: 0;
+}
+
+header {
+  background-color: hsla(194, 55%, 45%, 1);
+  height: 43px;
+  top: 0;
+  position: fixed;
+  z-index: 200;
+  width: 100%;
+  border-bottom: solid 1px hsla(194, 55%, 60%, 1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+/* header nav styling */
+  .header_nav {
+    display: inline;
+    float: right;
+    font-weight: bolder;
+    list-style: none;
+    height: 100%;
+    margin: 0 100px;
+    text-align: center;
+  }
+
+  .header_nav li {
+    box-sizing: border-box;
+    color: black;
+    cursor: pointer;
+    display: inline-block;
+    height: 100%;
+    padding: .8em;
+    position: relative;
+    text-align: center;
+  }
+
+  .header_nav li:hover {
+    background-color: hsla(194, 55%, 30%, 1);
+    color: white;
+  }
+
+  .header_nav li ul {
+    padding: 0;
+    position: absolute;
+    top: 43px;
+    left: 0;
+    min-width: 100px;
+    width: 100%;
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .header_nav li:hover ul {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .header_nav li ul li {
+    background-color: hsla(194, 55%, 30%, 1);
+    color: white;
+    display: block;
+  }
+
+  .header_nav li ul li:hover {
+    background-color: hsla(194, 55%, 35%, 1);
+  }
+/* end header-nav styling */
+
 .hidden {
   display: none;
+}
+
+.highcharts-container {
+  /*width: 100%;*/
+}
+
+.logo {
+  float: left;
+  margin-top: 6px;
+  margin-left: 10px;
+  width: 150px;
+}
+
+main {
+  float: left;
+  background-color: hsla(360, 100%, 100%, 1);
+  display: inline-block;
+  margin-top: 45px;
+  min-height: 100%;
+  width: 75%;
+}
+
+.welcome_message {
+  margin: auto;
+  margin-top: 100px;
+  min-width: 200px;
+  text-align: center;
+  vertical-align: middle;
+  width: 50%;
 }

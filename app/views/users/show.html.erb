@@ -1,18 +1,21 @@
-<h1>Dashboard</h1>
+<!-- Main view -->
 
-<button class='btn btn-graph activity activity-sharkFins' value='sharkFins'>Activities: By Activity Session</button>
-<button class='btn btn-graph activity activity-lineGraph' value='lineGraph'>Activities: By Day</button>
+<div class='left_menu'>
+  <ul>
+    <li class='btn btn-graph activity activity-sharkFins' data-value='sharkFins'>
+      Activities: By Activity Session
+    </li>
+    <li class='btn btn-graph activity activity-lineGraph' data-value='lineGraph'>
+      Activities: By Day
+    </li>
+  </ul>
+</div>
 
-<div class='graphs'></div>
+<main>
+  <div class='graphs'>
+    <!-- graphs will be appended here -->
+  </div>
+</main>
 
-<footer>
-  <nav>
-    <%= link_to 'Activities', activities_path %>
-    <%= link_to 'Log out', logout_path, method: :delete %>
-    <%= link_to 'Permanently delete account and all associated data',
-      user_path(session[:user_id]),
-      method: :delete,
-      data: { confirm: '!!!WARNING!!! THIS IS IRREVERSIBLE! Are you sure?' }
-    %>
-  </nav>
-</footer>
+<% content_for :header_nav do %>
+<% end %>

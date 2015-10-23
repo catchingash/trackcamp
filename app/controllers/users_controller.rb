@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
   before_action :verify_authenticated_user
 
-  def show; end
+  def show
+    @user = User.find(session[:user_id])
+  end
 
   def destroy
     User.find(session[:user_id]).destroy

@@ -1,4 +1,9 @@
-<h1>Welcome To TrackCamp!</h1>
+<div class='welcome_message'>
+  <h1>Welcome To TrackCamp!</h1>
 
-<p>Please <%= link_to 'log in with Google', login_path(:google_oauth2) %></p>
-<p>Please <%= link_to 'log in with Developer Strategy', login_path(:developer) %></p>
+  <p>Please <%= link_to 'log in with Google', login_path(:google_oauth2) %></p>
+
+  <% if Rails.env.development? %>
+    <p>Please <%= link_to 'log in with Developer Strategy', login_path(:developer) %></p>
+  <% end %>
+</div>

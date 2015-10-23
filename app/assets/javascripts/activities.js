@@ -5,7 +5,7 @@ $(document).ready(function() {
   $('.btn-graph.activity').click(function(event) {
     event.preventDefault();
 
-    var graphType = $(this).val()
+    var graphType = $(this).attr('data-value');
     var activityHandler = new ActivityHandler(graphType);
     activityHandler.toggleGraph();
   });
