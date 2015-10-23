@@ -78,6 +78,10 @@ ActivityHandler.prototype.formatDataFor_sharkFins = function(activities) {
 }
 
 ActivityHandler.prototype.sharkFins = function(activity_series) {
+  // this order causes 2 DOM redraws instead of 1; however,
+  // this is necessary for the chart width to be correct.
+  $('.graphs').append(this.graphContainer);
+
   this.graphContainer.highcharts(
     {
       chart: {
@@ -130,8 +134,6 @@ ActivityHandler.prototype.sharkFins = function(activity_series) {
       series: activity_series
     }
   );
-
-  $('.graphs').append(this.graphContainer);
 }
 
 ActivityHandler.prototype.formatDataFor_lineGraph = function(activities) {
@@ -165,6 +167,10 @@ ActivityHandler.prototype.formatDataFor_lineGraph = function(activities) {
 }
 
 ActivityHandler.prototype.lineGraph = function(duration_series) {
+  // this order causes 2 DOM redraws instead of 1; however,
+  // this is necessary for the chart width to be correct.
+  $('.graphs').append(this.graphContainer);
+
   this.graphContainer.highcharts(
     {
       chart: {
@@ -220,8 +226,6 @@ ActivityHandler.prototype.lineGraph = function(duration_series) {
       }]
     }
   );
-
-  $('.graphs').append(this.graphContainer);
 }
 
 // // result of ActivityHandler.prototype.formatDataForSharkFins:
