@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show, :destroy]
   resources :event_types, only: [:create, :update]
+  resources :events, only: [:create, :update]
 
   # FIXME: temp routes
   get '/activities', to: 'activities#index'
