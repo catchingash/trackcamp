@@ -9,7 +9,8 @@ class EventTypesController < ApplicationController
     else
       body = event_type.errors
       status = 400
-      raise "Failed event type creation. Params: #{params}. Errors: #{event_type.errors}."
+      raise "Failed event type creation. \
+        Params: #{params}. Errors: #{event_type.errors}."
     end
 
   rescue StandardError => e
@@ -19,18 +20,20 @@ class EventTypesController < ApplicationController
   end
 
   def update
-    event_type = EventType.find_by(id: params[:id])
+    event_type = EventType.find_by(id: params[:id], user_id: session[:user_id])
 
-    if event_type.nil? || event_type.user_id != session[:user_id]
+    if event_type.nil?
       status = 404
-      raise "Failed event type update. Event exists: #{!!event_type}. Event user_id: #{params[:id]}. Session user_id: #{session[:user_id]}."
+      raise "Failed event type update. \
+        Params: #{params}. Session user_id: #{session[:user_id]}."
     elsif event_type.update(create_params)
       body = event_type
       status = 200
     else
       body = event_type.errors
       status = 400
-      raise "Failed event type creation. Params: #{params}. Errors: #{event_type.errors}."
+      raise "Failed event type creation. \
+        Params: #{params}. Errors: #{event_type.errors}."
     end
 
   rescue StandardError => e
