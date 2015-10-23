@@ -196,6 +196,19 @@ ActivityHandler.prototype.lineGraph = function(duration_series) {
         type: 'datetime',
         labels: {
           format: '{value:%a<br>%b %d}'
+        },
+        minTickInterval: 86400000, // min interval: 1 day
+        tickPositioner: function() {
+          // fetches default positions, which are at midnight
+          var positions = this.tickPositions;
+
+          // shifts each time by 12 hours, so the tick marks are at midday
+          // which lines up with the midday data points
+          for (var i = 0; i < positions.length; i++) {
+            positions[i] += 43200000; // shifts by 12 hours
+          }
+
+          return positions;
         }
       },
       yAxis: {
