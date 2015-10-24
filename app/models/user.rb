@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_many :activities, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :event_types, dependent: :destroy
+  has_many :sleep, dependent: :destroy
 
   validates :uid, :email, presence: true, uniqueness: true
 
