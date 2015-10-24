@@ -12,7 +12,7 @@ class Event < ActiveRecord::Base
       less_than_or_equal_to: 10
     },
     format: {
-      with: /\A\d+(?:\.\d{0,2})?\z/ # limits it to a scale of 2 (.xx)
+      with: /\A\d+(?:\.\d{0,2})?\z/ # limits it to a scale of 2 (x.xx)
     },
     allow_blank: true
 end

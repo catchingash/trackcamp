@@ -12,36 +12,42 @@ RSpec.describe Activity, type: :model do
         activity = build(:activity, start_time: nil)
         expect(activity).to be_invalid
         expect(activity.errors).to include :start_time
+        expect(activity.errors[:start_time]).to include "can't be blank"
       end
 
       it 'requires an end time' do
         activity = build(:activity, end_time: nil)
         expect(activity).to be_invalid
         expect(activity.errors).to include :end_time
+        expect(activity.errors[:end_time]).to include "can't be blank"
       end
 
       it 'requires an activity type id' do
         activity = build(:activity, activity_type_id: nil)
         expect(activity).to be_invalid
         expect(activity.errors).to include :activity_type
+        expect(activity.errors[:activity_type]).to include "can't be blank"
       end
 
       it 'requires that the referenced activity type record exists' do
         activity = build(:activity, activity_type_id: 1)
         expect(activity).to be_invalid
         expect(activity.errors).to include :activity_type
+        expect(activity.errors[:activity_type]).to include "can't be blank"
       end
 
       it 'requires a user id' do
         activity = build(:activity, user_id: nil)
         expect(activity).to be_invalid
         expect(activity.errors).to include :user
+        expect(activity.errors[:user]).to include "can't be blank"
       end
 
       it 'requires that the referenced user record exists' do
         activity = build(:activity, user_id: 1)
         expect(activity).to be_invalid
         expect(activity.errors).to include :user
+        expect(activity.errors[:user]).to include "can't be blank"
       end
     end
   end

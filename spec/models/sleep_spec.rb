@@ -83,10 +83,16 @@ RSpec.describe Sleep, type: :model do
     describe 'time validations' do
       it 'is invalid if started_at is less than 1262304000000' do
         sleep = build(:sleep, started_at: 1262303999999)
+        expect(sleep).to be_invalid
+        expect(sleep.errors).to include :started_at
+        expect(sleep.errors[:started_at]).to include "must be greater than or equal to 1262304000000"
       end
 
       it 'is invalid if ended_at is less than 1262304000000' do
         sleep = build(:sleep, ended_at: 1262303999999)
+        expect(sleep).to be_invalid
+        expect(sleep.errors).to include :ended_at
+        expect(sleep.errors[:ended_at]).to include "must be greater than or equal to 1262304000000"
       end
     end
   end

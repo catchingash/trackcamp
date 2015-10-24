@@ -12,12 +12,14 @@ RSpec.describe User, type: :model do
         user = build(:user, uid: nil)
         expect(user).to be_invalid
         expect(user.errors).to include :uid
+        expect(user.errors[:uid]).to include "can't be blank"
       end
 
       it 'requires an email' do
         user = build(:user, email: nil)
         expect(user).to be_invalid
         expect(user.errors).to include :email
+        expect(user.errors[:email]).to include "can't be blank"
       end
     end
 
@@ -27,6 +29,7 @@ RSpec.describe User, type: :model do
         user = build(:user, uid: '1234')
         expect(user).to be_invalid
         expect(user.errors).to include :uid
+        expect(user.errors[:uid]).to include "has already been taken"
       end
 
       it 'requires a unique email' do
@@ -34,6 +37,7 @@ RSpec.describe User, type: :model do
         user = build(:user, email: 'email@example.com')
         expect(user).to be_invalid
         expect(user.errors).to include :email
+        expect(user.errors[:email]).to include "has already been taken"
       end
     end
   end
