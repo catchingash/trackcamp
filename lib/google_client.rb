@@ -101,7 +101,7 @@ class GoogleClient
         # trims 'derived:com.google.activity.segment:'
         activity[:data_source] = record['dataset'][0]['point'][0]['originDataSourceId'][36..-1]
         activity[:activity_type_id] = id_map.fetch(record['activity'].to_i) do |google_id|
-          id_map[google_id] = ActivityType.find_by(googleID: google_id).id
+          id_map[google_id] = ActivityType.find_by(google_id: google_id).id
         end
         activities << activity
       end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151024184238) do
+ActiveRecord::Schema.define(version: 20151024213337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,12 +31,12 @@ ActiveRecord::Schema.define(version: 20151024184238) do
 
   create_table "activity_types", force: :cascade do |t|
     t.string   "name",       null: false
-    t.integer  "googleID",   null: false
+    t.integer  "google_id",  null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "activity_types", ["googleID"], name: "index_activity_types_on_googleID", unique: true, using: :btree
+  add_index "activity_types", ["google_id"], name: "index_activity_types_on_google_id", unique: true, using: :btree
 
   create_table "event_types", force: :cascade do |t|
     t.integer  "user_id",    null: false
