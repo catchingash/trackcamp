@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151024213337) do
+ActiveRecord::Schema.define(version: 20151024231749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "activities", force: :cascade do |t|
-    t.integer  "start_time",       limit: 8, null: false
-    t.integer  "end_time",         limit: 8, null: false
+    t.integer  "started_at",       limit: 8, null: false
+    t.integer  "ended_at",         limit: 8, null: false
     t.integer  "activity_type_id",           null: false
     t.integer  "user_id",                    null: false
     t.string   "data_source"

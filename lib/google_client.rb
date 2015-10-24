@@ -22,8 +22,8 @@ class GoogleClient
   # end
 
   def self.fit_segments(params)
-    end_time = (Time.now.beginning_of_day.to_r * 1_000).round
-    raise "Start (#{params[:start_time]}) is after end (#{end_time})." if params[:start_time] > end_time
+    ended_at = (Time.now.beginning_of_day.to_r * 1_000).round
+    raise "Start (#{params[:started_at]}) is after end (#{ended_at})." if params[:started_at] > ended_at
 
     auth_token = fetch_new_auth_token(params[:refresh_token])
     raise 'Auth token fetch failed. Refresh token expired?' if auth_token.nil?
@@ -40,8 +40,8 @@ class GoogleClient
             'com.google.android.gms:merge_activity_segments'
         }
       ],
-      startTimeMillis: params[:start_time],
-      endTimeMillis: end_time,
+      startTimeMillis: params[:started_at],
+      endTimeMillis: ended_at,
       bucketByActivitySegment: {
         minDurationMillis: 300_000 # will only return activities 5+ minutes long
       }
@@ -96,8 +96,8 @@ class GoogleClient
         next if [0, 3, 4, 72, 109, 110, 111].include?(record['activity'])
 
         activity = {}
-        activity[:start_time] = record['startTimeMillis'].to_i
-        activity[:end_time] = record['endTimeMillis'].to_i
+        activity[:started_at] = record['startTimeMillis'].to_i
+        activity[:ended_at] = record['endTimeMillis'].to_i
         # trims 'derived:com.google.activity.segment:'
         activity[:data_source] = record['dataset'][0]['point'][0]['originDataSourceId'][36..-1]
         activity[:activity_type_id] = id_map.fetch(record['activity'].to_i) do |google_id|

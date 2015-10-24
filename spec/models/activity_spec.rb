@@ -9,17 +9,17 @@ RSpec.describe Activity, type: :model do
 
     describe 'presence validations' do
       it 'requires a start time' do
-        activity = build(:activity, start_time: nil)
+        activity = build(:activity, started_at: nil)
         expect(activity).to be_invalid
-        expect(activity.errors).to include :start_time
-        expect(activity.errors[:start_time]).to include "can't be blank"
+        expect(activity.errors).to include :started_at
+        expect(activity.errors[:started_at]).to include "can't be blank"
       end
 
       it 'requires an end time' do
-        activity = build(:activity, end_time: nil)
+        activity = build(:activity, ended_at: nil)
         expect(activity).to be_invalid
-        expect(activity.errors).to include :end_time
-        expect(activity.errors[:end_time]).to include "can't be blank"
+        expect(activity.errors).to include :ended_at
+        expect(activity.errors[:ended_at]).to include "can't be blank"
       end
 
       it 'requires an activity type id' do

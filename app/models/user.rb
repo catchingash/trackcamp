@@ -13,10 +13,10 @@ class User < ActiveRecord::Base
   # for use in the API response
   def activities_by_date
     results = []
-    activities.includes(:activity_type).order(:start_time).each do |activity|
+    activities.includes(:activity_type).order(:started_at).each do |activity|
       a = {}
-      a[:start_time] = activity.start_time
-      a[:end_time] = activity.end_time
+      a[:started_at] = activity.started_at
+      a[:ended_at] = activity.ended_at
       a[:activity_type] = activity.activity_type.name
       a[:data_source] = activity.data_source
       results << a
@@ -28,13 +28,13 @@ class User < ActiveRecord::Base
 
   def google_params
     { refresh_token: refresh_token,
-      start_time: last_activity_date ||
+      started_at: last_activity_date ||
         # defaults to 31 days ago
         (Time.now.beginning_of_day.to_r * 1_000).round - 2_678_000_000
     }
   end
 
   def last_activity_date
-    activities.maximum('start_time')
+    activities.maximum('started_at')
   end
 end

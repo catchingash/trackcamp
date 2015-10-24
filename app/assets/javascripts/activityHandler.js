@@ -64,9 +64,9 @@ ActivityHandler.prototype.formatDataFor_sharkFins = function(activities) {
     }
 
     // format the data in the way that Highcharts wants
-    var data1 = [ activity.start_time, 0]
-    var data2 = [ activity.end_time, (activity.end_time - activity.start_time)/60000 ] // y-value = activity duration in minutes. // NOTE: 60000 ms == 1 min
-    var data3 = [ activity.end_time + 1, null ] // this makes the graph line break after this activity
+    var data1 = [ activity.started_at, 0]
+    var data2 = [ activity.ended_at, (activity.ended_at - activity.started_at)/60000 ] // y-value = activity duration in minutes. // NOTE: 60000 ms == 1 min
+    var data3 = [ activity.ended_at + 1, null ] // this makes the graph line break after this activity
 
     // add the formatted data to the correct index position (where the matching activity type is located)
     formatted[index].data.push(data1);
@@ -142,8 +142,8 @@ ActivityHandler.prototype.formatDataFor_lineGraph = function(activities) {
   // collect the total time across all activities for each day
   for (var i = 0; i < activities.length; i++) {
     var activity = activities[i];
-    var duration = (activity.end_time - activity.start_time); // in milliseconds
-    var time = new Date(activity.start_time);
+    var duration = (activity.ended_at - activity.started_at); // in milliseconds
+    var time = new Date(activity.started_at);
     var day = new Date(time.getFullYear(), time.getMonth(), time.getDate(), 12).valueOf(); // selects noon on that day, in milliseconds since epoch
 
     if (sums[day]) {

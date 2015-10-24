@@ -15,7 +15,7 @@ RSpec.describe ActivitiesController, type: :controller do
 
     it 'returns json'
     it 'returns an array of hashes'
-    it 'returns start_time, end_time, activity_type, and data_source for each activity'
-    it "returns all of a user's activities, ordered by start_time"
+    it 'returns started_at, ended_at, activity_type, and data_source for each activity'
+    it "returns all of a user's activities, ordered by started_at"
   end
 end
