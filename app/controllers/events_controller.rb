@@ -9,8 +9,8 @@ class EventsController < ApplicationController
     else
       body = event.errors
       status = 400
-      raise "Failed event creation. \
-        Params: #{params}. Errors: #{event.errors}."
+      raise 'Failed event creation. ' +
+        "Params: #{params}. Errors: #{event.errors}."
     end
 
   rescue StandardError => e
@@ -25,16 +25,16 @@ class EventsController < ApplicationController
 
     if event.nil?
       status = 404
-      raise "Failed event update. \
-        Params: #{params}. Session user_id: #{session[:user_id]}."
+      raise 'Failed event update. ' +
+        "Params: #{params}. Session user_id: #{session[:user_id]}."
     elsif event.update(create_params)
       body = event
       status = 200
     else
       body = event.errors
       status = 400
-      raise "Failed event creation. \
-        Params: #{params}. Errors: #{event.errors}."
+      raise 'Failed event creation. ' +
+        "Params: #{params}. Errors: #{event.errors}."
     end
 
   rescue StandardError => e

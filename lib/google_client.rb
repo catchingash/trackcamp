@@ -36,8 +36,8 @@ class GoogleClient
     req_body = {
       aggregateBy: [
         {
-          dataSourceId: "derived:com.google.activity.segment:\
-            com.google.android.gms:merge_activity_segments"
+          dataSourceId: 'derived:com.google.activity.segment:' +
+            'com.google.android.gms:merge_activity_segments'
         }
       ],
       startTimeMillis: params[:start_time],

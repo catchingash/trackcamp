@@ -24,8 +24,8 @@
               <%= link_to 'Delete account',
                 user_path(session[:user_id]),
                 method: :delete,
-                data: { confirm: "!!!WARNING!!! This will permanently \
-                  delete account and all associated data. Are you sure?" }
+                data: { confirm: '!!!WARNING!!! This will permanently ' +
+                  'delete account and all associated data. Are you sure?' }
               %>
             </li>
           </ul>
