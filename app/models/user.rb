@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
     { refresh_token: refresh_token,
       started_at: last_activity_date ||
         # defaults to 31 days ago
-        (Time.now.beginning_of_day.to_r * 1_000).round - 2_678_000_000
+        (Time.current.beginning_of_day.to_r * 1_000).round - 2_678_000_000
     }
   end
 

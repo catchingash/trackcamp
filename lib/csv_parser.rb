@@ -9,11 +9,11 @@ class SleepBotCSVParser
 
   def self.create_sleep(user_id, row, utc_offset)
     started_at = row[:date] + ' ' + row[:sleep_time] + ' ' + utc_offset
-    started_at = DateTime.strptime(started_at, '%m-%d-%Y %I:%M %P %z')
+    started_at = Time.strptime(started_at, '%m-%d-%Y %I:%M %P %z')
     started_at = (started_at.to_f * 1_000).round
 
     ended_at = row[:date] + ' ' + row[:awake_time] + ' ' + utc_offset
-    ended_at = DateTime.strptime(ended_at, '%m-%d-%Y %I:%M %P %z')
+    ended_at = Time.strptime(ended_at, '%m-%d-%Y %I:%M %P %z')
     ended_at = (ended_at.to_f * 1_000).round
 
     # Only 1 date is provided in the CSV from SleepBot. This is for awake_time.

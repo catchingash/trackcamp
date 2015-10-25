@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
       redirect_to root_path
     else
       @user = User.find(session[:user_id])
+      Time.zone = session[:time_zone] || 'Pacific Time (US & Canada)'
     end
   end
 end

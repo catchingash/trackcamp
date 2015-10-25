@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
   def create
     @user.update_all # OPTIMIZE: it'd be really great if this were asynchronous
     session[:user_id] = @user.id
+    session[:time_zone] = @user.time_zone
     redirect_to user_path(@user.id)
   end
 

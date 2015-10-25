@@ -72,6 +72,10 @@ RSpec.describe SessionsController, type: :controller do
           expect(session[:user_id]).to eq user.id
         end
 
+        it 'assigns user time zone to session[:time_zone]' do
+          expect(session[:time_zone]).to eq user.time_zone
+        end
+
         it 'assigns attributes correctly' do
           expect(user.uid).to eq google_auth_hash[:uid]
           expect(user.email).to eq google_auth_hash[:info][:email]

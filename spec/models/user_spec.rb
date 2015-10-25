@@ -7,6 +7,11 @@ RSpec.describe User, type: :model do
       expect(user).to be_valid
     end
 
+    it "defaults time zone to 'Pacific Time (US & Canada)'" do
+      user = build(:user)
+      expect(user.time_zone).to eq 'Pacific Time (US & Canada)'
+    end
+
     describe 'presence validations' do
       it 'requires a uid' do
         user = build(:user, uid: nil)
