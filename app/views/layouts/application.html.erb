@@ -10,16 +10,20 @@
 <body>
 
   <header>
-    <%= image_tag 'logo_solid.svg', class: 'logo', alt: 'TrackCamp Logo' %>
+    <%= link_to image_tag('logo_solid.svg', class: 'logo', alt: 'TrackCamp Logo'), root_path %>
 
     <ul class='header_nav'>
-      <%= yield :header_nav %>
-
       <% if signed_in? %>
+        <li><span class='add_new'>+</span>
+            <ul>
+              <li><%= link_to 'Upload Sleep Data', new_sleep_path %></li>
+            </ul>
+        </li>
+
         <!-- <li><%= link_to 'Activities', activities_path %></li> -->
+
         <li><%= @user.email %>
           <ul>
-            <li><%= link_to 'Upload Sleep Data', new_sleep_path %></li>
             <li><%= link_to 'Log out', logout_path, method: :delete %></li>
             <li>
               <%= link_to 'Delete account',
