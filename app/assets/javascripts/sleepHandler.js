@@ -1,11 +1,11 @@
-function ActivityHandler(graphType) {
+function SleepHandler(graphType) {
   this.formatMethod = this['formatDataFor_' + graphType];
   this.graphMethod = this[graphType];
-  this.graphContainer = $('<div class="graph activity activity-' + graphType + '">');
-  this.graph = $('.graph.activity-' + graphType);
+  this.graphContainer = $('<div class="graph sleep sleep-' + graphType + '">');
+  this.graph = $('.graph.sleep-' + graphType);
 }
 
-ActivityHandler.prototype.toggleGraph = function() {
+SleepHandler.prototype.toggleGraph = function() {
   // if we've already created the graph, show/hide it
   // else, create the graph
   if (this.graph.length > 0) {
@@ -15,17 +15,17 @@ ActivityHandler.prototype.toggleGraph = function() {
   }
 }
 
-ActivityHandler.prototype.createGraph = function() {
+SleepHandler.prototype.createGraph = function() {
   // if we already have the data, create the graph
   // else, fetch the data, THEN create the graph
-  if (dataRepo.activities.length > 0) {
-    var formattedData = this.formatMethod(dataRepo.activities);
+  if (dataRepo.sleeps.length > 0) {
+    var formattedData = this.formatMethod(dataRepo.sleeps);
     this.graphMethod(formattedData);
   } else {
-    $.ajax({url: '/activities',
+    $.ajax({url: '/sleep',
       method: 'GET',
       success: function(res) {
-        dataRepo.activities = res;
+        dataRepo.sleeps = res;
         var formattedData = this.formatMethod(res);
         this.graphMethod(formattedData);
       }.bind(this)
@@ -34,50 +34,31 @@ ActivityHandler.prototype.createGraph = function() {
 }
 
 // NOTE: see below for example
-ActivityHandler.prototype.formatDataFor_sharkFins = function(activities) {
-  var formatted = [];
+SleepHandler.prototype.formatDataFor_sharkFins = function(sleeps) {
+  var formatted = [{
+    type: 'area',
+    name: 'Sleep',
+    data: []
+  }];
 
-  for (var i = 0; i < activities.length; i++) {
-    var activity = activities[i];
-    var found = false;
-    var index;
-
-    for (var j = 0; j < formatted.length; j++) {
-      // if this is the matching activity type, save the index
-      if (formatted[j].name == activity.activity_type) {
-        found = true;
-        index = j;
-        break;
-      }
-    }
-
-    // if we didn't find the matching activity type, create a new activity type and save its index
-    if (!found) {
-      found = true;
-      index = formatted.length; // this will be the index of the object added below
-
-      formatted.push({
-        type: 'area',
-        name: activity.activity_type,
-        data: []
-      });
-    }
+  for (var i = 0; i < sleeps.length; i++) {
+    var sleep = sleeps[i];
 
     // format the data in the way that Highcharts wants
-    var data1 = [ activity.started_at, 0]
-    var data2 = [ activity.ended_at, (activity.ended_at - activity.started_at)/60000 ] // y-value = activity duration in minutes. // NOTE: 60000 ms == 1 min
-    var data3 = [ activity.ended_at + 1, null ] // this makes the graph line break after this activity
+    var data1 = [ sleep.started_at, 0]
+    var data2 = [ sleep.ended_at, (sleep.ended_at - sleep.started_at)/3600000 ] // y-value = sleep duration in hours. // NOTE: 3600000 ms == 1 hour
+    var data3 = [ sleep.ended_at + 1, null ] // this makes the graph line break after this sleep
 
-    // add the formatted data to the correct index position (where the matching activity type is located)
-    formatted[index].data.push(data1);
-    formatted[index].data.push(data2);
-    formatted[index].data.push(data3);
+    // add the formatted data to the correct index position (where the matching sleep type is located)
+    formatted[0].data.push(data1);
+    formatted[0].data.push(data2);
+    formatted[0].data.push(data3);
   }
 
   return formatted;
 }
 
-ActivityHandler.prototype.sharkFins = function(activity_series) {
+SleepHandler.prototype.sharkFins = function(activity_series) {
   // this order causes 2 DOM redraws instead of 1; however,
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
@@ -88,7 +69,7 @@ ActivityHandler.prototype.sharkFins = function(activity_series) {
           zoomType: 'x'
       },
       title: {
-          text: 'Activities (Minutes Per Session)'
+          text: 'Sleep (Per Session)'
       },
       xAxis: {
         title: {
@@ -101,7 +82,7 @@ ActivityHandler.prototype.sharkFins = function(activity_series) {
       },
       yAxis: {
           title: {
-              text: 'Minutes'
+              text: 'Hours'
           },
           labels: {
               formatter: function () {
@@ -111,7 +92,7 @@ ActivityHandler.prototype.sharkFins = function(activity_series) {
       },
       tooltip: {
           headerFormat: '<b>{series.name}</b><br>',
-          pointFormat: '{point.x:%l:%M %p}: {point.y:.0f} min'
+          pointFormat: '{point.x:%l:%M %p}: {point.y:.2f} hours'
       },
       plotOptions: {
           area: {
@@ -126,14 +107,14 @@ ActivityHandler.prototype.sharkFins = function(activity_series) {
   );
 }
 
-ActivityHandler.prototype.formatDataFor_lineGraph = function(activities) {
+SleepHandler.prototype.formatDataFor_lineGraph = function(sleeps) {
   var sums = {};
 
-  // collect the total time across all activities for each day
-  for (var i = 0; i < activities.length; i++) {
-    var activity = activities[i];
-    var duration = (activity.ended_at - activity.started_at); // in milliseconds
-    var time = new Date(activity.started_at);
+  // collect the total time across all sleeps for each day
+  for (var i = 0; i < sleeps.length; i++) {
+    var sleep = sleeps[i];
+    var duration = (sleep.ended_at - sleep.started_at); // in milliseconds
+    var time = new Date(sleep.ended_at);
     var day = new Date(time.getFullYear(), time.getMonth(), time.getDate(), 12).valueOf(); // selects noon on that day, in milliseconds since epoch
 
     if (sums[day]) {
@@ -149,14 +130,14 @@ ActivityHandler.prototype.formatDataFor_lineGraph = function(activities) {
   // format times for the graph: [[date, duration], ... , [date, duration]]
   for (var i = 0; i < times.length; i++) {
     var time = times[i];
-    var data_point = [parseInt(time), Math.round(sums[time]/60000)]; // [ date, duration (rounded to the nearest minute) ]
+    var data_point = [parseInt(time), sums[time]/3600000]; // [ date, duration (rounded to the nearest hour) ]
     duration_series.push(data_point);
   }
 
   return duration_series;
 }
 
-ActivityHandler.prototype.lineGraph = function(duration_series) {
+SleepHandler.prototype.lineGraph = function(duration_series) {
   // this order causes 2 DOM redraws instead of 1; however,
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
@@ -167,7 +148,7 @@ ActivityHandler.prototype.lineGraph = function(duration_series) {
           zoomType: 'x'
       },
       title: {
-          text: 'Activities (Minutes Per Day)'
+          text: 'Sleep (Per Day)'
       },
       xAxis: {
         title: {
@@ -193,7 +174,7 @@ ActivityHandler.prototype.lineGraph = function(duration_series) {
       },
       yAxis: {
           title: {
-              text: 'Minutes'
+              text: 'Hours'
           },
           labels: {
               formatter: function () {
@@ -203,7 +184,7 @@ ActivityHandler.prototype.lineGraph = function(duration_series) {
       },
       tooltip: {
           headerFormat: '<b>{series.name}</b><br>',
-          pointFormat: '{point.x:%a, %b %d}: {point.y:.0f} min'
+          pointFormat: '{point.x:%a, %b %d}: {point.y:.2f} hours'
       },
       plotOptions: {
           area: {
@@ -214,34 +195,21 @@ ActivityHandler.prototype.lineGraph = function(duration_series) {
           enabled: false
       },
       series: [{
-        name: 'Activites',
+        name: 'Sleep',
         data: duration_series
       }]
     }
   );
 }
 
-// // result of ActivityHandler.prototype.formatDataForSharkFins:
-// [
-//   {
-//     name: 'Walking',
-//     data: [
-//       [1443642605000, 0],
-//       [1443645944000, 55],
-//       [1443645944001, null],
-//       [1443665371000, 0],
-//       [1443666716000, 22],
-//     ]
-//   },
-//   {
-//     name: 'Calisthenics',
-//     data: [
-//       [1443642303000, 0],
-//       [1443642303000, 8],
-//       [1443642303001, null],
-//       [1443656383000, 0]
-//       [1443656383000, 20]
-//       [1443656383001, null]
-//     ]
-//   }
-// ]
+// // result of SleepHandler.prototype.formatDataForSharkFins:
+// [{
+//   name: 'Sleep',
+//   data: [
+//     [1443642605000, 0],
+//     [1443645944000, 0.9275],
+//     [1443645944001, null],
+//     [1443665371000, 0],
+//     [1443666716000, 0.37361111111],
+//   ]
+// }]

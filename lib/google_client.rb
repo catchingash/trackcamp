@@ -22,7 +22,7 @@ class GoogleClient
   # end
 
   def self.fit_segments(params)
-    ended_at = (Time.now.beginning_of_day.to_r * 1_000).round
+    ended_at = (Time.now.beginning_of_day.to_f * 1_000).round
     raise "Start (#{params[:started_at]}) is after end (#{ended_at})." if params[:started_at] > ended_at
 
     auth_token = fetch_new_auth_token(params[:refresh_token])

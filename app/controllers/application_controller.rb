@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   before_action :require_login
 
   def require_login
-    redirect_to root_path if session[:user_id].nil?
+    if session[:user_id].nil?
+      redirect_to root_path
+    else
+      @user = User.find(session[:user_id])
+    end
   end
 end

@@ -1,5 +1,6 @@
 function DataRepository() {
   this.activities = [];
+  this.sleeps = [];
     // // this.activities format example:
     // [
     //   {"started_at":1442715161266, "ended_at":1442715751717, "activity_type":"Calisthenics", "data_source":"com.popularapp.sevenmins:session_activity_segment"},

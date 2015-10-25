@@ -28,11 +28,6 @@ body {
   padding: 0;
 }
 
-header a {
-  color: inherit;
-  text-decoration: none;
-}
-
 .btn-graph {
   box-sizing: border-box;
   cursor: pointer;
@@ -51,26 +46,10 @@ footer {
 }
 
 .graph {
-  height: 300px;
   border-bottom: 1px solid hsla(194, 55%, 87%, 1);
+  height: 300px;
   margin: auto;
   padding: .5em 1em .5em .25em;
-}
-
-.left_menu {
-  background-color: hsla(194, 55%, 97%, 1);
-  border-right: 1px solid hsla(194, 55%, 87%, 1);
-  box-sizing: border-box;
-  float: left;
-  min-height: 100%;
-  max-width: 500px;
-  padding: 1em;
-  padding-top: 50px;
-  width: 25%;
-}
-
-.left_menu ul {
-  padding: 0;
 }
 
 header {
@@ -92,6 +71,12 @@ header {
     height: 100%;
     margin: 0 4% 0 0;
     text-align: center;
+  }
+
+  .header_nav a {
+    color: inherit;
+    display: block;
+    text-decoration: none;
   }
 
   .header_nav li {
@@ -143,10 +128,26 @@ header {
   display: none;
 }
 
+.left_menu {
+  background-color: hsla(194, 55%, 97%, 1);
+  border-right: 1px solid hsla(194, 55%, 87%, 1);
+  box-sizing: border-box;
+  float: left;
+  max-width: 500px;
+  min-height: 100%;
+  padding: 1em;
+  padding-top: 50px;
+  width: 25%;
+}
+
+.left_menu ul {
+  padding: 0;
+}
+
 .logo {
   float: left;
-  margin-top: 6px;
   margin-left: 4%;
+  margin-top: 6px;
   width: 150px;
 }
 
@@ -154,8 +155,8 @@ main {
   background-color: hsla(360, 100%, 100%, 1);
   box-sizing: border-box;
   float: left;
-  padding-top: 50px;
   min-height: 100%;
+  padding-top: 50px;
   width: 75%;
 }
 
