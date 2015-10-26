@@ -1,3 +1,5 @@
+require_relative '../../lib/date_helpers'
+
 class User < ActiveRecord::Base
   has_many :activities, dependent: :destroy
   has_many :events, dependent: :destroy
@@ -27,10 +29,9 @@ class User < ActiveRecord::Base
   private
 
   def google_params
-    { refresh_token: refresh_token,
-      started_at: last_activity_date ||
-        # defaults to 31 days ago
-        (Time.current.beginning_of_day.to_r * 1_000).round - 2_678_000_000
+    {
+      refresh_token: refresh_token,
+      started_at: last_activity_date || DateHelpers.thirty_one_days_ago
     }
   end
 

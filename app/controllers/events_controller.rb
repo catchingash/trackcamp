@@ -1,3 +1,5 @@
+require_relative '../../lib/date_helpers'
+
 class EventsController < ApplicationController
   before_action :transform_time, only: [:create]
 
@@ -71,10 +73,7 @@ class EventsController < ApplicationController
   # NOTE: depending on implementation, update may need time transformed as well.
   def transform_time
     if params[:event][:time]
-      time = params[:event][:time]
-      time = Time.zone.parse(time)
-      time = (time.to_f * 1_000).round
-      params[:event][:time] = time
+      params[:event][:time] = DateHelpers.parse_to_ms(params[:event][:time])
     end
   end
 end

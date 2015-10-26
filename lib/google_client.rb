@@ -1,4 +1,5 @@
 require 'net/http'
+require_relative './date_helpers'
 
 class GoogleClient
   # # NOTE: this is currently unused because data recorded by Google Fit
@@ -22,7 +23,7 @@ class GoogleClient
   # end
 
   def self.fit_segments(params)
-    ended_at = (Time.now.beginning_of_day.to_f * 1_000).round
+    ended_at = DateHelpers.beginning_of_today
     raise "Start (#{params[:started_at]}) is after end (#{ended_at})." if params[:started_at] > ended_at
 
     auth_token = fetch_new_auth_token(params[:refresh_token])
