@@ -23,7 +23,10 @@ test:
   database: trackcamp_test
 
 production:
-  <<: *default
-  database: trackcamp_production
-  username: ENV['POSTGRESQL_PRODUCTION_USERNAME']
-  password: ENV['POSTGRESQL_PRODUCTION_PASSWORD']
+  adapter: postgresql
+  encoding: unicode
+  database: <%= ENV['RDS_DB_NAME'] %>
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOSTNAME'] %>
+  port: <%= ENV['RDS_PORT'] %>
