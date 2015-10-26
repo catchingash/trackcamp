@@ -1,22 +1,41 @@
 class EventsController < ApplicationController
+  before_action :transform_time, only: [:create]
+
+  def new
+    @event = Event.new()
+  end
+
+  # ajax create method
+    # def create
+    #   event = Event.new(create_params)
+    #   event.user_id = session[:user_id]
+
+    #   if event.save
+    #     body = event
+    #     status = 201
+    #   else
+    #     body = event.errors
+    #     status = 400
+    #     raise 'Failed event creation. ' +
+    #       "Params: #{params}. Errors: #{event.errors}."
+    #   end
+
+    # rescue StandardError => e
+    #   Rails.logger.debug e
+    # ensure
+    #   render json: body.as_json, status: status
+    # end
+  #
+
   def create
-    event = Event.new(create_params)
-    event.user_id = session[:user_id]
+    @event = Event.new(create_params)
+    @event.user_id = session[:user_id]
 
-    if event.save
-      body = event
-      status = 201
+    if @event.save
+      redirect_to user_path(session[:user_id])
     else
-      body = event.errors
-      status = 400
-      raise 'Failed event creation. ' +
-        "Params: #{params}. Errors: #{event.errors}."
+      render :new
     end
-
-  rescue StandardError => e
-    Rails.logger.debug e
-  ensure
-    render json: body.as_json, status: status
   end
 
   def update
@@ -47,5 +66,15 @@ class EventsController < ApplicationController
 
   def create_params
     params.require(:event).permit(:time, :rating, :note, :event_type_id)
+  end
+
+  # NOTE: depending on implementation, update may need time transformed as well.
+  def transform_time
+    if params[:event][:time]
+      time = params[:event][:time]
+      time = Time.zone.parse(time)
+      time = (time.to_f * 1_000).round
+      params[:event][:time] = time
+    end
   end
 end

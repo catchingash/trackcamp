@@ -16,6 +16,8 @@
       <% if signed_in? %>
         <li><span class='add_new'>+</span>
             <ul>
+              <li><%= link_to 'New Event', new_event_path %></li>
+              <li><%= link_to 'New Event Category', new_event_type_path %></li>
               <li><%= link_to 'Upload Sleep Data', new_sleep_path %></li>
             </ul>
         </li>

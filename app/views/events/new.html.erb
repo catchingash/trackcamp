@@ -1,0 +1,18 @@
+<main>
+  <%= form_for @event do |f| %>
+    <%= collection_select :event, :event_type_id, @user.event_types, :id, :name, { prompt: 'What kind of event?' }, { required: true } %>
+
+    <%= f.label :time %>
+    <a href='#' class='tooltip'>(i)<span>This is in <%= @user.time_zone %>.</span></a>
+    <%= f.datetime_local_field :time, required: true, min: '2010-01-01T00:00', value: Time.current.strftime('%Y-%m-%dT%R') %>
+    <!-- Note that the datefield will break on update. -->
+
+    <%= f.label :rating %>
+    <%= f.number_field :rating , within: 1..10, step: 0.01, placeholder: 'X.XX' %>
+
+    <%= f.label :note %>
+    <%= f.text_area :note, placeholder: 'Any details?' %>
+
+    <%= f.submit %>
+  <% end %>
+</main>

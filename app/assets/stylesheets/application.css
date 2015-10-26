@@ -164,6 +164,30 @@ main {
   width: 75%;
 }
 
+/* tooltip */
+  .tooltip {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .tooltip span {
+    border-radius: 2px;
+    box-shadow: 0px 0px 8px 4px #666;
+    display: none;
+    margin-top: 1.5em;
+    padding: .5em;
+    position: absolute;
+    z-index: 10;
+  }
+
+  .tooltip:hover span {
+    display: inline;
+    position: absolute;
+    color: #EEE;
+    background: black;
+  }
+/* end tooltip*/
+
 .welcome_message {
   margin: auto;
   margin-top: 100px;

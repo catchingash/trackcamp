@@ -1,22 +1,39 @@
 class EventTypesController < ApplicationController
+  def new
+    @event_type = EventType.new()
+  end
+
+  # ajax create method
+    # def create
+    #   event_type = EventType.new(create_params)
+    #   event_type.user_id = session[:user_id]
+
+    #   if event_type.save
+    #     body = event_type
+    #     status = 201
+    #   else
+    #     body = event_type.errors
+    #     status = 400
+    #     raise 'Failed event type creation. ' +
+    #       "Params: #{params}. Errors: #{event_type.errors}."
+    #   end
+
+    # rescue StandardError => e
+    #   Rails.logger.debug e
+    # ensure
+    #   render json: body.as_json, status: status
+    # end
+  #
+
   def create
-    event_type = EventType.new(create_params)
-    event_type.user_id = session[:user_id]
+    @event_type = EventType.new(create_params)
+    @event_type.user_id = session[:user_id]
 
-    if event_type.save
-      body = event_type
-      status = 201
+    if @event_type.save
+      redirect_to user_path(session[:user_id])
     else
-      body = event_type.errors
-      status = 400
-      raise 'Failed event type creation. ' +
-        "Params: #{params}. Errors: #{event_type.errors}."
+      render :new
     end
-
-  rescue StandardError => e
-    Rails.logger.debug e
-  ensure
-    render json: body.as_json, status: status
   end
 
   def update
