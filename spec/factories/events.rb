@@ -6,5 +6,4 @@ FactoryGirl.define do
     event_type
     user
   end
-
 end

@@ -14,16 +14,14 @@ class User < ActiveRecord::Base
 
   # for use in the API response
   def activities_by_date
-    results = []
-    activities.includes(:activity_type).order(:started_at).each do |activity|
-      a = {}
-      a[:started_at] = activity.started_at
-      a[:ended_at] = activity.ended_at
-      a[:activity_type] = activity.activity_type.name
-      a[:data_source] = activity.data_source
-      results << a
+    activities.includes(:activity_type).order(:started_at).map do |activity|
+      {
+        started_at: activity.started_at,
+        ended_at: activity.ended_at,
+        activity_type: activity.activity_type.name,
+        data_source: activity.data_source
+      }
     end
-    results
   end
 
   private

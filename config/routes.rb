@@ -13,8 +13,12 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy', as: 'logout'
 
   resources :users, only: [:show, :destroy]
-  resources :event_types, only: [:new, :create, :update]
-  resources :events, only: [:new, :create, :update]
+  resources :event_types, only: [:new, :create]
+  resources :events, only: [:new, :create]
   resources :sleep, only: [:index, :new, :create]
+
+  # API routes
   resources :activities, only: :index
+  patch '/events/:id', to: 'events#update'
+  patch '/event_types/:id', to: 'event_types#update'
 end
