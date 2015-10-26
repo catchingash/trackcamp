@@ -3,6 +3,14 @@ require_relative '../../lib/date_helpers'
 class EventsController < ApplicationController
   before_action :transform_time, only: [:create]
 
+  def index
+    if params[:event_type]
+      render json: @user.events_by_type(params[:event_type]).as_json, status: :ok
+    else
+      render json: @user.events.order(:time).as_json, status: :ok
+    end
+  end
+
   def new
     @event = Event.new()
   end

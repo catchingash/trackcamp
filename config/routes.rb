@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
   # API routes
   resources :activities, only: :index
+  get '/events', to: 'events#index'
   patch '/events/:id', to: 'events#update'
   patch '/event_types/:id', to: 'event_types#update'
 end

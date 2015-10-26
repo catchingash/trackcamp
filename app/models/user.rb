@@ -24,6 +24,21 @@ class User < ActiveRecord::Base
     end
   end
 
+  # for use in the API response
+  def events_by_type(event_type)
+    event_type = EventType.find_by(name: event_type)
+    return unless event_type
+
+    events.order(:time).where(event_type_id: event_type.id).map do |event|
+      {
+        time: event.time,
+        rating: event.rating,
+        note: event.note,
+        event_type: event_type.name
+      }
+    end
+  end
+
   private
 
   def google_params
