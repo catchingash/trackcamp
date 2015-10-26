@@ -16,7 +16,7 @@ class DateHelpers
     to_ms_since_epoch(time)
   end
 
-  def parse_to_ms(string)
+  def self.parse_to_ms(string)
     time = Time.zone.parse(string)
     to_ms_since_epoch(time)
   end
