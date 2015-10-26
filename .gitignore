@@ -17,3 +17,8 @@
 
 # FOR SECURITY REASONS! Ignore .env file
 /.env
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
