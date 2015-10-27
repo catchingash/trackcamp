@@ -79,48 +79,32 @@ tc.Sleep.prototype.sharkFins = function(activity_series) {
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
 
-  this.graphContainer.highcharts(
-    {
-      chart: {
-          zoomType: 'x'
-      },
-      title: {
-          text: 'Sleep (Per Session)'
-      },
-      xAxis: {
-        title: {
-          text: 'Date'
-        },
-        type: 'datetime',
-        labels: {
-          format: '{value:%l %p<br>%b %d}'
+  this.graphContainer.highcharts({
+    chart: { zoomType: 'x' },
+    title: { text: 'Sleep (Per Session)' },
+    xAxis: {
+      title: { text: 'Date' },
+      type: 'datetime',
+      labels: { format: '{value:%l %p<br>%b %d}' }
+    },
+    yAxis: {
+      title: { text: 'Hours' },
+      labels: {
+        formatter: function () {
+          return this.value;
         }
-      },
-      yAxis: {
-          title: {
-              text: 'Hours'
-          },
-          labels: {
-              formatter: function () {
-                  return this.value;
-              }
-          }
-      },
-      tooltip: {
-          headerFormat: '<b>{series.name}</b><br>',
-          pointFormat: '{point.x:%l:%M %p}: {point.y:.2f} hours'
-      },
-      plotOptions: {
-          area: {
-              fillOpacity: 0.5
-          }
-      },
-      credits: {
-          enabled: false
-      },
-      series: activity_series
-    }
-  );
+      }
+    },
+    tooltip: {
+      headerFormat: '<b>{series.name}</b><br>',
+      pointFormat: '{point.x:%l:%M %p}: {point.y:.2f} hours'
+    },
+    plotOptions: {
+      area: { fillOpacity: 0.5 }
+    },
+    credits: { enabled: false },
+    series: activity_series
+  });
 }
 
 tc.Sleep.prototype.formatDataFor_lineGraph = function(sleeps) {
@@ -131,7 +115,8 @@ tc.Sleep.prototype.formatDataFor_lineGraph = function(sleeps) {
     var sleep = sleeps[i];
     var duration = (sleep.ended_at - sleep.started_at); // in milliseconds
     var time = new Date(sleep.ended_at);
-    var day = new Date(time.getFullYear(), time.getMonth(), time.getDate(), 12).valueOf(); // selects noon on that day, in milliseconds since epoch
+    // selects noon on that day, in milliseconds since epoch
+    var day = new Date(time.getFullYear(), time.getMonth(), time.getDate(), 12).valueOf();
 
     sums[day] = sums[day] ? sums[day] + duration : duration
   }
@@ -142,7 +127,7 @@ tc.Sleep.prototype.formatDataFor_lineGraph = function(sleeps) {
   // format times for the graph: [[date, duration], ... , [date, duration]]
   for (var i = 0; i < times.length; i++) {
     var time = times[i];
-    var data_point = [parseInt(time), sums[time]/3600000]; // [ date, duration (rounded to the nearest hour) ]
+    var data_point = [parseInt(time), sums[time]/3600000];
     duration_series.push(data_point);
   }
 
@@ -154,64 +139,48 @@ tc.Sleep.prototype.lineGraph = function(duration_series) {
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
 
-  this.graphContainer.highcharts(
-    {
-      chart: {
-          zoomType: 'x'
-      },
-      title: {
-          text: 'Sleep (Per Day)'
-      },
-      xAxis: {
-        title: {
-          text: 'Date'
-        },
-        type: 'datetime',
-        labels: {
-          format: '{value:%a<br>%b %d}'
-        },
-        minTickInterval: 86400000, // min interval: 1 day
-        tickPositioner: function() {
-          // fetches default positions, which are at midnight
-          var positions = this.tickPositions;
+  this.graphContainer.highcharts({
+    chart: { zoomType: 'x' },
+    title: { text: 'Sleep (Per Day)' },
+    xAxis: {
+      title: { text: 'Date' },
+      type: 'datetime',
+      labels: { format: '{value:%a<br>%b %d}' },
+      minTickInterval: 86400000, // min interval: 1 day
+      tickPositioner: function() {
+        // fetches default positions, which are at midnight
+        var positions = this.tickPositions;
 
-          // shifts each time by 12 hours, so the tick marks are at midday
-          // which lines up with the midday data points
-          for (var i = 0; i < positions.length; i++) {
-            positions[i] += 43200000; // shifts by 12 hours
-          }
-
-          return positions;
+        // shifts each time by 12 hours, so the tick marks are at midday
+        // which lines up with the midday data points
+        for (var i = 0; i < positions.length; i++) {
+          positions[i] += 43200000; // shifts by 12 hours
         }
-      },
-      yAxis: {
-          title: {
-              text: 'Hours'
-          },
-          labels: {
-              formatter: function () {
-                  return this.value;
-              }
-          }
-      },
-      tooltip: {
-          headerFormat: '<b>{series.name}</b><br>',
-          pointFormat: '{point.x:%a, %b %d}: {point.y:.2f} hours'
-      },
-      plotOptions: {
-          area: {
-              fillOpacity: 0.5
-          }
-      },
-      credits: {
-          enabled: false
-      },
-      series: [{
-        name: 'Sleep',
-        data: duration_series
-      }]
-    }
-  );
+
+        return positions;
+      }
+    },
+    yAxis: {
+      title: { text: 'Hours' },
+      labels: {
+        formatter: function () {
+          return this.value;
+        }
+      }
+    },
+    tooltip: {
+      headerFormat: '<b>{series.name}</b><br>',
+      pointFormat: '{point.x:%a, %b %d}: {point.y:.2f} hours'
+    },
+    plotOptions: {
+      area: { fillOpacity: 0.5 }
+    },
+    credits: { enabled: false },
+    series: [{
+      name: 'Sleep',
+      data: duration_series
+    }]
+  });
 }
 
 // // result of tc.Sleep.prototype.formatDataForSharkFins:
