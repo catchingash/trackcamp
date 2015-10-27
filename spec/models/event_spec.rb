@@ -62,28 +62,14 @@ RSpec.describe Event, type: :model do
         expect(event.errors[:rating]).to include "is invalid"
       end
 
-      it 'must be betweeen 0 and 10 (0 is valid)' do
-        event = build(:event, rating: 0)
+      it 'can be positive' do
+        event = build(:event, rating: 100)
         expect(event).to be_valid
       end
 
-      it 'must be betweeen 0 and 10 (10 is valid)' do
-        event = build(:event, rating: 10)
+      it 'can be negative' do
+        event = build(:event, rating: -100)
         expect(event).to be_valid
-      end
-
-      it 'must be betweeen 0 and 10 (-1 is invalid)' do
-        event = build(:event, rating: -1)
-        expect(event).to be_invalid
-        expect(event.errors).to include :rating
-        expect(event.errors[:rating]).to include "must be greater than or equal to 0"
-      end
-
-      it 'must be betweeen 0 and 10 (10.1 is invalid)' do
-        event = build(:event, rating: 10.1)
-        expect(event).to be_invalid
-        expect(event.errors).to include :rating
-        expect(event.errors[:rating]).to include "must be less than or equal to 10"
       end
     end
 
