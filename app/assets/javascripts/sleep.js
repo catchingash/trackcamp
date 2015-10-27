@@ -1,4 +1,6 @@
-function Sleep(graphType) {
+window.tc = window.tc || {};
+
+tc.Sleep = function(graphType) {
   $('.btn-graph.sleep').click(this.handleClick.bind(this));
 
   this.formatMethod;
@@ -7,7 +9,7 @@ function Sleep(graphType) {
   this.graph;
 }
 
-Sleep.prototype.handleClick = function(event) {
+tc.Sleep.prototype.handleClick = function(event) {
   event.preventDefault();
 
   graphType = $(event.target).attr('data-value')
@@ -19,7 +21,7 @@ Sleep.prototype.handleClick = function(event) {
   this.toggleGraph();
 }
 
-Sleep.prototype.toggleGraph = function() {
+tc.Sleep.prototype.toggleGraph = function() {
   // if we've already created the graph, show/hide it
   // else, create the graph
   if (this.graph.length > 0) {
@@ -29,17 +31,17 @@ Sleep.prototype.toggleGraph = function() {
   }
 }
 
-Sleep.prototype.createGraph = function() {
+tc.Sleep.prototype.createGraph = function() {
   // if we already have the data, create the graph
   // else, fetch the data, THEN create the graph
-  if (dataRepo.sleeps.length > 0) {
-    var formattedData = this.formatMethod(dataRepo.sleeps);
+  if (tc.dataRepo.sleeps.length > 0) {
+    var formattedData = this.formatMethod(tc.dataRepo.sleeps);
     this.graphMethod(formattedData);
   } else {
     $.ajax({url: '/sleep',
       method: 'GET',
       success: function(res) {
-        dataRepo.sleeps = res;
+        tc.dataRepo.sleeps = res;
         var formattedData = this.formatMethod(res);
         this.graphMethod(formattedData);
       }.bind(this)
@@ -48,7 +50,7 @@ Sleep.prototype.createGraph = function() {
 }
 
 // NOTE: see below for example
-Sleep.prototype.formatDataFor_sharkFins = function(sleeps) {
+tc.Sleep.prototype.formatDataFor_sharkFins = function(sleeps) {
   var formatted = [{
     type: 'area',
     name: 'Sleep',
@@ -72,7 +74,7 @@ Sleep.prototype.formatDataFor_sharkFins = function(sleeps) {
   return formatted;
 }
 
-Sleep.prototype.sharkFins = function(activity_series) {
+tc.Sleep.prototype.sharkFins = function(activity_series) {
   // this order causes 2 DOM redraws instead of 1; however,
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
@@ -121,7 +123,7 @@ Sleep.prototype.sharkFins = function(activity_series) {
   );
 }
 
-Sleep.prototype.formatDataFor_lineGraph = function(sleeps) {
+tc.Sleep.prototype.formatDataFor_lineGraph = function(sleeps) {
   var sums = {};
 
   // collect the total time across all sleeps for each day
@@ -147,7 +149,7 @@ Sleep.prototype.formatDataFor_lineGraph = function(sleeps) {
   return duration_series;
 }
 
-Sleep.prototype.lineGraph = function(duration_series) {
+tc.Sleep.prototype.lineGraph = function(duration_series) {
   // this order causes 2 DOM redraws instead of 1; however,
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
@@ -212,7 +214,7 @@ Sleep.prototype.lineGraph = function(duration_series) {
   );
 }
 
-// // result of Sleep.prototype.formatDataForSharkFins:
+// // result of tc.Sleep.prototype.formatDataForSharkFins:
 // [{
 //   name: 'Sleep',
 //   data: [

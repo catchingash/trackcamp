@@ -1,4 +1,6 @@
-function Activity (graphType) {
+window.tc = window.tc || {};
+
+tc.Activity = function(graphType) {
   $('.btn-graph.activity').click(this.handleClick.bind(this));
 
   this.formatMethod;
@@ -7,7 +9,7 @@ function Activity (graphType) {
   this.graph;
 }
 
-Activity.prototype.handleClick = function(event) {
+tc.Activity.prototype.handleClick = function(event) {
   event.preventDefault();
 
   graphType = $(event.target).attr('data-value')
@@ -19,7 +21,7 @@ Activity.prototype.handleClick = function(event) {
   this.toggleGraph();
 }
 
-Activity.prototype.toggleGraph = function() {
+tc.Activity.prototype.toggleGraph = function() {
   // if we've already created the graph, show/hide it
   // else, create the graph
   if (this.graph.length > 0) {
@@ -29,17 +31,17 @@ Activity.prototype.toggleGraph = function() {
   }
 }
 
-Activity.prototype.createGraph = function() {
+tc.Activity.prototype.createGraph = function() {
   // if we already have the data, create the graph
   // else, fetch the data, THEN create the graph
-  if (dataRepo.activities.length > 0) {
-    var formattedData = this.formatMethod(dataRepo.activities);
+  if (tc.dataRepo.activities.length > 0) {
+    var formattedData = this.formatMethod(tc.dataRepo.activities);
     this.graphMethod(formattedData);
   } else {
     $.ajax({url: '/activities',
       method: 'GET',
       success: function(res) {
-        dataRepo.activities = res;
+        tc.dataRepo.activities = res;
         var formattedData = this.formatMethod(res);
         this.graphMethod(formattedData);
       }.bind(this)
@@ -48,7 +50,7 @@ Activity.prototype.createGraph = function() {
 }
 
 // NOTE: see below for example
-Activity.prototype.formatDataFor_sharkFins = function(activities) {
+tc.Activity.prototype.formatDataFor_sharkFins = function(activities) {
   var formatted = [];
 
   for (var i = 0; i < activities.length; i++) {
@@ -91,7 +93,7 @@ Activity.prototype.formatDataFor_sharkFins = function(activities) {
   return formatted;
 }
 
-Activity.prototype.sharkFins = function(activity_series) {
+tc.Activity.prototype.sharkFins = function(activity_series) {
   // this order causes 2 DOM redraws instead of 1; however,
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
@@ -140,7 +142,7 @@ Activity.prototype.sharkFins = function(activity_series) {
   );
 }
 
-Activity.prototype.formatDataFor_lineGraph = function(activities) {
+tc.Activity.prototype.formatDataFor_lineGraph = function(activities) {
   var sums = {};
 
   // collect the total time across all activities for each day
@@ -170,7 +172,7 @@ Activity.prototype.formatDataFor_lineGraph = function(activities) {
   return duration_series;
 }
 
-Activity.prototype.lineGraph = function(duration_series) {
+tc.Activity.prototype.lineGraph = function(duration_series) {
   // this order causes 2 DOM redraws instead of 1; however,
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
@@ -235,7 +237,7 @@ Activity.prototype.lineGraph = function(duration_series) {
   );
 }
 
-// // result of Activity.prototype.formatDataForSharkFins:
+// // result of tc.Activity.prototype.formatDataForSharkFins:
 // [
 //   {
 //     name: 'Walking',

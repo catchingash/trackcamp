@@ -15,12 +15,10 @@
 //= require turbolinks
 //= require_tree .
 
-window.tc = {};
-// FIXME: I did something wrong when I tried to namespace everything. :(
+window.tc = window.tc || {};
 
 $(document).ready(function() {
-  var dataRepo = new DataRepository();
-
-  new Activity();
-  new Sleep();
+  tc.dataRepo = new tc.DataRepository();
+  new tc.Activity();
+  new tc.Sleep();
 });
