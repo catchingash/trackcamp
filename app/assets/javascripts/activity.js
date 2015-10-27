@@ -104,6 +104,8 @@ tc.Activity.prototype.sharkFins = function(activity_series) {
     xAxis: {
       title: { text: 'Date' },
       type: 'datetime',
+      // 12 AM
+      // Oct 02
       labels: { format: '{value:%l %p<br>%b %d}' }
     },
     yAxis: {
@@ -116,6 +118,7 @@ tc.Activity.prototype.sharkFins = function(activity_series) {
     },
     tooltip: {
       headerFormat: '<b>{series.name}</b><br>',
+      // 7:51 AM: 25 min
       pointFormat: '{point.x:%l:%M %p}: {point.y:.0f} min'
     },
     plotOptions: {
@@ -167,6 +170,8 @@ tc.Activity.prototype.lineGraph = function(duration_series) {
     xAxis: {
       title: { text: 'Date' },
       type: 'datetime',
+      // Fri
+      // Oct 02
       labels: { format: '{value:%a<br>%b %d}' },
       minTickInterval: 86400000, // min interval: 1 day
       tickPositioner: function() {
@@ -192,6 +197,7 @@ tc.Activity.prototype.lineGraph = function(duration_series) {
     },
     tooltip: {
       headerFormat: '<b>{series.name}</b><br>',
+      // Fri, Oct 02: 36 min
       pointFormat: '{point.x:%a, %b %d}: {point.y:.0f} min'
     },
     plotOptions: {

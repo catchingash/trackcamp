@@ -85,6 +85,8 @@ tc.Sleep.prototype.sharkFins = function(activity_series) {
     xAxis: {
       title: { text: 'Date' },
       type: 'datetime',
+      // 12 AM
+      // Oct 02
       labels: { format: '{value:%l %p<br>%b %d}' }
     },
     yAxis: {
@@ -97,6 +99,7 @@ tc.Sleep.prototype.sharkFins = function(activity_series) {
     },
     tooltip: {
       headerFormat: '<b>{series.name}</b><br>',
+      // 7:54 AM: 2.88 hours
       pointFormat: '{point.x:%l:%M %p}: {point.y:.2f} hours'
     },
     plotOptions: {
@@ -145,6 +148,8 @@ tc.Sleep.prototype.lineGraph = function(duration_series) {
     xAxis: {
       title: { text: 'Date' },
       type: 'datetime',
+      // Mon
+      // Oct 05
       labels: { format: '{value:%a<br>%b %d}' },
       minTickInterval: 86400000, // min interval: 1 day
       tickPositioner: function() {
@@ -170,6 +175,7 @@ tc.Sleep.prototype.lineGraph = function(duration_series) {
     },
     tooltip: {
       headerFormat: '<b>{series.name}</b><br>',
+      // Wed, Aug 19: 7.58 hours
       pointFormat: '{point.x:%a, %b %d}: {point.y:.2f} hours'
     },
     plotOptions: {

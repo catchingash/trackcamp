@@ -21,4 +21,5 @@ $(document).ready(function() {
   tc.dataRepo = new tc.DataRepository();
   new tc.Activity();
   new tc.Sleep();
+  new tc.Event();
 });
