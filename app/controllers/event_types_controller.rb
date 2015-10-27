@@ -1,6 +1,6 @@
 class EventTypesController < ApplicationController
   def new
-    @event_type = EventType.new()
+    @event_type = EventType.new
   end
 
   # ajax create method
