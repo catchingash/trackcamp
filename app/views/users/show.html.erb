@@ -2,25 +2,27 @@
 
 <div class='left_menu'>
   <ul>
-    <li class='btn btn-graph activity activity-sharkFins' data-value='sharkFins'>
+    <li class='btn btn-graph activity activity-sharkFins' data-graphType='sharkFins'>
       Activities: By Session
     </li>
-    <li class='btn btn-graph activity activity-lineGraph' data-value='lineGraph'>
+    <li class='btn btn-graph activity activity-lineGraph' data-graphType='lineGraph'>
       Activities: By Day
     </li>
 
     <%# if @user.sleep.any? %>
-      <li class='btn btn-graph sleep sleep-sharkFins' data-value='sharkFins'>
+      <li class='btn btn-graph sleep sleep-sharkFins' data-graphType='sharkFins'>
         Sleep: By Session
       </li>
-      <li class='btn btn-graph sleep sleep-lineGraph' data-value='lineGraph'>
+      <li class='btn btn-graph sleep sleep-lineGraph' data-graphType='lineGraph'>
         Sleep: By Day
       </li>
     <%# end %>
 
     <% @user.event_types.each do |event_type| %>
-      <li class='<%= "btn btn-graph event event-#{event_type.name}-lineGraph" %>'
-        data-value=<%= "#{event_type.name}-lineGraph" %>>
+      <li class="<%= "btn btn-graph event event-#{event_type.name}-lineGraph" %>"
+        data-graphType=<%= 'lineGraph' %>
+        data-eventType=<%= "#{event_type.name}" %>
+      >
         <%= event_type.name.titlecase %>
       </li>
     <% end %>

@@ -12,7 +12,7 @@ tc.Sleep = function(graphType) {
 tc.Sleep.prototype.handleClick = function(event) {
   event.preventDefault();
 
-  graphType = $(event.target).attr('data-value')
+  graphType = $(event.target).attr('data-graphType')
   this.formatMethod = this['formatDataFor_' + graphType];
   this.graphMethod = this[graphType];
   this.graphContainer = $('<div class="graph sleep sleep-' + graphType + '">');
