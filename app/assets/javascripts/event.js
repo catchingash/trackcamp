@@ -77,7 +77,6 @@ tc.Event.prototype.lineGraph = function(data_points) {
     chart: { zoomType: 'x' },
     title: { text: this.eventType },
     xAxis: {
-      title: { text: 'Date' },
       type: 'datetime',
       labels: { format: '{value:%a<br>%b %d}' }
     },

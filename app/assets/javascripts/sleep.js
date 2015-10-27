@@ -83,7 +83,6 @@ tc.Sleep.prototype.sharkFins = function(activity_series) {
     chart: { zoomType: 'x' },
     title: { text: 'Sleep (Per Session)' },
     xAxis: {
-      title: { text: 'Date' },
       type: 'datetime',
       // 12 AM
       // Oct 02
@@ -146,7 +145,6 @@ tc.Sleep.prototype.lineGraph = function(duration_series) {
     chart: { zoomType: 'x' },
     title: { text: 'Sleep (Per Day)' },
     xAxis: {
-      title: { text: 'Date' },
       type: 'datetime',
       // Mon
       // Oct 05
