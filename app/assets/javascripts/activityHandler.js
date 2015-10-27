@@ -1,11 +1,25 @@
-function ActivityHandler(graphType) {
+function Activity (graphType) {
+  $('.btn-graph.activity').click(this.handleClick.bind(this));
+
+  this.formatMethod;
+  this.graphMethod;
+  this.graphContainer;
+  this.graph;
+}
+
+Activity.prototype.handleClick = function(event) {
+  event.preventDefault();
+
+  graphType = $(event.target).attr('data-value')
   this.formatMethod = this['formatDataFor_' + graphType];
   this.graphMethod = this[graphType];
   this.graphContainer = $('<div class="graph activity activity-' + graphType + '">');
   this.graph = $('.graph.activity-' + graphType);
+
+  this.toggleGraph();
 }
 
-ActivityHandler.prototype.toggleGraph = function() {
+Activity.prototype.toggleGraph = function() {
   // if we've already created the graph, show/hide it
   // else, create the graph
   if (this.graph.length > 0) {
@@ -15,7 +29,7 @@ ActivityHandler.prototype.toggleGraph = function() {
   }
 }
 
-ActivityHandler.prototype.createGraph = function() {
+Activity.prototype.createGraph = function() {
   // if we already have the data, create the graph
   // else, fetch the data, THEN create the graph
   if (dataRepo.activities.length > 0) {
@@ -34,7 +48,7 @@ ActivityHandler.prototype.createGraph = function() {
 }
 
 // NOTE: see below for example
-ActivityHandler.prototype.formatDataFor_sharkFins = function(activities) {
+Activity.prototype.formatDataFor_sharkFins = function(activities) {
   var formatted = [];
 
   for (var i = 0; i < activities.length; i++) {
@@ -77,7 +91,7 @@ ActivityHandler.prototype.formatDataFor_sharkFins = function(activities) {
   return formatted;
 }
 
-ActivityHandler.prototype.sharkFins = function(activity_series) {
+Activity.prototype.sharkFins = function(activity_series) {
   // this order causes 2 DOM redraws instead of 1; however,
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
@@ -126,7 +140,7 @@ ActivityHandler.prototype.sharkFins = function(activity_series) {
   );
 }
 
-ActivityHandler.prototype.formatDataFor_lineGraph = function(activities) {
+Activity.prototype.formatDataFor_lineGraph = function(activities) {
   var sums = {};
 
   // collect the total time across all activities for each day
@@ -156,7 +170,7 @@ ActivityHandler.prototype.formatDataFor_lineGraph = function(activities) {
   return duration_series;
 }
 
-ActivityHandler.prototype.lineGraph = function(duration_series) {
+Activity.prototype.lineGraph = function(duration_series) {
   // this order causes 2 DOM redraws instead of 1; however,
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
@@ -221,7 +235,7 @@ ActivityHandler.prototype.lineGraph = function(duration_series) {
   );
 }
 
-// // result of ActivityHandler.prototype.formatDataForSharkFins:
+// // result of Activity.prototype.formatDataForSharkFins:
 // [
 //   {
 //     name: 'Walking',

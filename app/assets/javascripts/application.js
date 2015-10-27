@@ -15,4 +15,12 @@
 //= require turbolinks
 //= require_tree .
 
-var dataRepo = new DataRepository()
+window.tc = {};
+// FIXME: I did something wrong when I tried to namespace everything. :(
+
+$(document).ready(function() {
+  var dataRepo = new DataRepository();
+
+  new Activity();
+  new Sleep();
+});

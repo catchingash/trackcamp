@@ -1,11 +1,25 @@
-function SleepHandler(graphType) {
+function Sleep(graphType) {
+  $('.btn-graph.sleep').click(this.handleClick.bind(this));
+
+  this.formatMethod;
+  this.graphMethod;
+  this.graphContainer;
+  this.graph;
+}
+
+Sleep.prototype.handleClick = function(event) {
+  event.preventDefault();
+
+  graphType = $(event.target).attr('data-value')
   this.formatMethod = this['formatDataFor_' + graphType];
   this.graphMethod = this[graphType];
   this.graphContainer = $('<div class="graph sleep sleep-' + graphType + '">');
   this.graph = $('.graph.sleep-' + graphType);
+
+  this.toggleGraph();
 }
 
-SleepHandler.prototype.toggleGraph = function() {
+Sleep.prototype.toggleGraph = function() {
   // if we've already created the graph, show/hide it
   // else, create the graph
   if (this.graph.length > 0) {
@@ -15,7 +29,7 @@ SleepHandler.prototype.toggleGraph = function() {
   }
 }
 
-SleepHandler.prototype.createGraph = function() {
+Sleep.prototype.createGraph = function() {
   // if we already have the data, create the graph
   // else, fetch the data, THEN create the graph
   if (dataRepo.sleeps.length > 0) {
@@ -34,7 +48,7 @@ SleepHandler.prototype.createGraph = function() {
 }
 
 // NOTE: see below for example
-SleepHandler.prototype.formatDataFor_sharkFins = function(sleeps) {
+Sleep.prototype.formatDataFor_sharkFins = function(sleeps) {
   var formatted = [{
     type: 'area',
     name: 'Sleep',
@@ -58,7 +72,7 @@ SleepHandler.prototype.formatDataFor_sharkFins = function(sleeps) {
   return formatted;
 }
 
-SleepHandler.prototype.sharkFins = function(activity_series) {
+Sleep.prototype.sharkFins = function(activity_series) {
   // this order causes 2 DOM redraws instead of 1; however,
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
@@ -107,7 +121,7 @@ SleepHandler.prototype.sharkFins = function(activity_series) {
   );
 }
 
-SleepHandler.prototype.formatDataFor_lineGraph = function(sleeps) {
+Sleep.prototype.formatDataFor_lineGraph = function(sleeps) {
   var sums = {};
 
   // collect the total time across all sleeps for each day
@@ -117,11 +131,7 @@ SleepHandler.prototype.formatDataFor_lineGraph = function(sleeps) {
     var time = new Date(sleep.ended_at);
     var day = new Date(time.getFullYear(), time.getMonth(), time.getDate(), 12).valueOf(); // selects noon on that day, in milliseconds since epoch
 
-    if (sums[day]) {
-      sums[day] += duration;
-    } else {
-      sums[day] = duration;
-    }
+    sums[day] = sums[day] ? sums[day] + duration : duration
   }
 
   var times = Object.keys(sums);
@@ -137,7 +147,7 @@ SleepHandler.prototype.formatDataFor_lineGraph = function(sleeps) {
   return duration_series;
 }
 
-SleepHandler.prototype.lineGraph = function(duration_series) {
+Sleep.prototype.lineGraph = function(duration_series) {
   // this order causes 2 DOM redraws instead of 1; however,
   // this is necessary for the chart width to be correct.
   $('.graphs').append(this.graphContainer);
@@ -202,7 +212,7 @@ SleepHandler.prototype.lineGraph = function(duration_series) {
   );
 }
 
-// // result of SleepHandler.prototype.formatDataForSharkFins:
+// // result of Sleep.prototype.formatDataForSharkFins:
 // [{
 //   name: 'Sleep',
 //   data: [
