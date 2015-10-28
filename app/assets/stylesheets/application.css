@@ -140,6 +140,10 @@ header {
   display: none;
 }
 
+.info-icon {
+  height: 1em;
+}
+
 .left_menu {
   background-color: rgba(243, 250, 252, 1);
   background-color: hsla(194, 55%, 97%, 1);
@@ -173,6 +177,10 @@ main {
   min-height: 100%;
   padding-top: 50px;
   width: 75%;
+}
+
+.signin-google {
+  height: 3em;
 }
 
 /* tooltip */

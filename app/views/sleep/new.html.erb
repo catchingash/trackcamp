@@ -12,7 +12,7 @@
 
     <%= collection_select :time_zone, :utc_offset,
       ActiveSupport::TimeZone.all, :formatted_offset, :to_s,
-      { prompt: true }, { required: true }
+      { prompt: 'Select Time Zone' }, { required: true }
     %>
 
     <%= submit_tag( "Import" ) %>

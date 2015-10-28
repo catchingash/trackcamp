@@ -3,7 +3,7 @@
     <%= collection_select :event, :event_type_id, @user.event_types, :id, :name, { prompt: 'What kind of event?' }, { required: true } %>
 
     <%= f.label :time %>
-    <a href='#' class='tooltip'>(i)<span>This is in <%= @user.time_zone %>.</span></a>
+    <a href='#' class='tooltip'><%= image_tag('info_icon.png', class: 'info-icon', alt: '(info)') %><span>This is in <%= @user.time_zone %>.</span></a>
     <%= f.datetime_local_field :time, required: true, min: '2010-01-01T00:00', value: Time.current.strftime('%Y-%m-%dT%R') %>
     <!-- Note that the datefield will break on update. -->
 
