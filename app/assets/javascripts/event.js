@@ -12,11 +12,12 @@ tc.Event = function(graphType) {
 
 tc.Event.prototype.handleClick = function(event) {
   event.preventDefault();
-  var target = $(event.target);
+  var btn = $(event.target)
+  btn.toggleClass('active');
 
-  this.eventType = target.attr('data-eventType');
+  this.eventType = btn.attr('data-eventType');
 
-  var graphType = target.attr('data-graphType');
+  var graphType = btn.attr('data-graphType');
   this.formatMethod = this['formatDataFor_' + graphType];
   this.graphMethod = this[graphType];
   this.graphContainer = $('<div class="graph event event-' + graphType + ' event-' + this.eventType + '">');

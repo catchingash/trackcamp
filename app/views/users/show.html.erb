@@ -3,18 +3,18 @@
 <div class='left_menu'>
   <ul>
     <li class='btn btn-graph activity activity-sharkFins' data-graphType='sharkFins'>
-      Activities: By Session
+      Activities: By Session<span class='icon-toggle'>✓</span>
     </li>
     <li class='btn btn-graph activity activity-lineGraph' data-graphType='lineGraph'>
-      Activities: By Day
+      Activities: By Day<span class='icon-toggle'>✓</span>
     </li>
 
     <%# if @user.sleep.any? %>
       <li class='btn btn-graph sleep sleep-sharkFins' data-graphType='sharkFins'>
-        Sleep: By Session
+        Sleep: By Session<span class='icon-toggle'>✓</span>
       </li>
       <li class='btn btn-graph sleep sleep-lineGraph' data-graphType='lineGraph'>
-        Sleep: By Day
+        Sleep: By Day<span class='icon-toggle'>✓</span>
       </li>
     <%# end %>
 
@@ -24,6 +24,7 @@
         data-eventType=<%= "#{event_type.name}" %>
       >
         <%= event_type.name.titlecase %>
+        <span class='icon-toggle'>✓</span>
       </li>
     <% end %>
   </ul>

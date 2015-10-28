@@ -144,6 +144,17 @@ header {
   height: 1em;
 }
 
+.icon-toggle {
+  color: rgba(52, 148, 178, 1);
+  color: hsla(194, 55%, 45%, 1);
+  display: none;
+  float: right;
+}
+
+.active .icon-toggle {
+  display: inline;
+}
+
 .left_menu {
   background-color: rgba(243, 250, 252, 1);
   background-color: hsla(194, 55%, 97%, 1);
