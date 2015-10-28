@@ -11,6 +11,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       scope: "email, \
         https://www.googleapis.com/auth/fitness.activity.read, \
         https://www.googleapis.com/auth/fitness.activity.write, \
+        https://www.googleapis.com/auth/fitness.body.read, \
         https://www.googleapis.com/auth/fitness.body.write, \
         https://www.googleapis.com/auth/fitness.location.write",
       prompt: 'consent'

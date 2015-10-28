@@ -9,7 +9,8 @@ class User < ActiveRecord::Base
   validates :uid, :email, presence: true, uniqueness: true
 
   def update_all
-    Activity.update_new(id, google_params)
+    Activity.update_new(id, google_fit_params)
+    Event.update_weight(id, google_weight_params)
   end
 
   # for use in the API response
@@ -41,10 +42,16 @@ class User < ActiveRecord::Base
 
   private
 
-  def google_params
+  def google_fit_params
     {
       refresh_token: refresh_token,
       started_at: last_activity_date || DateHelpers.thirty_one_days_ago
+    }
+  end
+
+  def google_weight_params
+    {
+      refresh_token: refresh_token
     }
   end
 

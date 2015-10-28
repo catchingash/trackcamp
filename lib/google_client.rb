@@ -2,25 +2,30 @@ require 'net/http'
 require_relative './date_helpers'
 
 class GoogleClient
-  # # NOTE: this is currently unused because data recorded by Google Fit
-  # #       (instead of 3rd-party apps) is not saved in sessions.
-  # def self.fit_sessions(refresh_token)
-  #   auth_token = fetch_new_auth_token(refresh_token)
-  #   return { error: 'internal error' } if auth_token.nil?
+  def self.weights(params)
+    auth_token = fetch_new_auth_token(params[:refresh_token])
+    raise 'Auth token fetch failed. Refresh token expired?' if auth_token.nil?
 
-  #   uri = URI('https://www.googleapis.com/fitness/v1/users/me/sessions')
-  #   http = Net::HTTP.new(uri.host, uri.port)
-  #   http.use_ssl = true
-  #   http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    uri = weight_uri(params[:started_at])
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
 
-  #   req = Net::HTTP::Get.new(uri.request_uri)
-  #   req.content_type = 'application/json;encoding=utf-8'
-  #   req['Authorization'] = 'Bearer ' + auth_token
+    req = Net::HTTP::Get.new(uri.request_uri)
+    req.content_type = 'application/json;encoding=utf-8'
+    req['Authorization'] = 'Bearer ' + auth_token
 
-  #   response = http.request(req)
+    response = http.request(req)
+    if response.code == '200'
+      return format_weights(JSON.parse(response.body))
+    else
+      raise "Google Fit weight API error: #{response.body}"
+    end
 
-  #   JSON.parse(response.body)
-  # end
+  rescue StandardError => e
+    Rails.logger.debug e
+    puts e
+  end
 
   def self.fit_segments(params)
     ended_at = DateHelpers.beginning_of_today
@@ -54,15 +59,17 @@ class GoogleClient
 
     response = http.request(req)
     if response.code == '200'
-      return format_segments(JSON.parse(response.body))
+      return format_fit_segments(JSON.parse(response.body))
     else
-      raise "Google Fit API error: #{response.body}"
+      raise "Google Fit Segments API error: #{response.body}"
     end
 
   rescue StandardError => e
     Rails.logger.debug e
     puts e
   end
+
+  private
 
   # OPTIMIZE: could cache the auth token
   def self.fetch_new_auth_token(refresh_token)
@@ -88,7 +95,8 @@ class GoogleClient
     response['access_token']
   end
 
-  def self.format_segments(data)
+  # FIXME: change to a map!
+  def self.format_fit_segments(data)
     id_map = {}
     activities = []
     if data['bucket']
@@ -108,5 +116,28 @@ class GoogleClient
       end
     end
     activities
+  end
+
+  def self.format_weights(data)
+    data['point'].map do |record|
+      {
+        time: record['startTimeNanos'][0...-6], # rounds ns --> ms
+        rating: kg_to_lbs(record['value'][0]['fpVal'])
+      }
+    end
+  end
+
+  def self.weight_uri(started_at)
+    ended_at = DateHelpers.beginning_of_today
+    raise "Start (#{started_at}) is after end (#{ended_at})." if started_at > ended_at
+
+    uri = 'https://www.googleapis.com/fitness/v1/users/me/dataSources/raw:com.google.weight:com.google.android.apps.fitness:user_input/datasets/'
+    uri += started_at.to_s + '000000-' + ended_at.to_s + '000000'
+
+    URI(uri)
+  end
+
+  def self.kg_to_lbs(in_kg)
+    (in_kg * 2.20462).round(2)
   end
 end
