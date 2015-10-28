@@ -19,6 +19,7 @@ html {
 }
 
 body {
+  background-color: rgba(243, 250, 252, 1);
   background-color: hsla(194, 55%, 97%, 1);
   font-family: "Open Sans", "Helvetica", Arial, sans-serif;
   font-size: 15px;
@@ -38,6 +39,7 @@ body {
 }
 
 .btn-graph:hover {
+  background-color: rgba(255, 255, 255, 1);
   background-color: hsla(360, 100%, 100%, 1);
 }
 
@@ -46,6 +48,7 @@ footer {
 }
 
 .graph {
+  border-bottom: 1px solid rgba(204, 232, 240, 1);
   border-bottom: 1px solid hsla(194, 55%, 87%, 1);
   height: 300px;
   margin: auto;
@@ -53,7 +56,9 @@ footer {
 }
 
 header {
+  background-color: rgba(52, 148, 178, 1);
   background-color: hsla(194, 55%, 45%, 1);
+  border-bottom: solid 1px rgba(97, 183, 209, 1);
   border-bottom: solid 1px hsla(194, 55%, 60%, 1);
   box-shadow: 0 1px 2px rgba(0,0,0,0.15);
   height: 43px;
@@ -95,6 +100,7 @@ header {
   }
 
   .header_nav li:hover {
+    background-color: rgba(34, 99, 119, 1);
     background-color: hsla(194, 55%, 30%, 1);
     color: white;
   }
@@ -118,12 +124,14 @@ header {
   }
 
   .header_nav li ul li {
+    background-color: rgba(34, 99, 119, 1);
     background-color: hsla(194, 55%, 30%, 1);
     color: white;
     display: block;
   }
 
   .header_nav li ul li:hover {
+    background-color: rgba(40, 115, 138, 1);
     background-color: hsla(194, 55%, 35%, 1);
   }
 /* end header-nav styling */
@@ -133,7 +141,9 @@ header {
 }
 
 .left_menu {
+  background-color: rgba(243, 250, 252, 1);
   background-color: hsla(194, 55%, 97%, 1);
+  border-right: 1px solid rgba(204, 232, 240, 1);
   border-right: 1px solid hsla(194, 55%, 87%, 1);
   box-sizing: border-box;
   float: left;
@@ -156,6 +166,7 @@ header {
 }
 
 main {
+  background-color: rgba(255, 255, 255, 1);
   background-color: hsla(360, 100%, 100%, 1);
   box-sizing: border-box;
   float: left;
