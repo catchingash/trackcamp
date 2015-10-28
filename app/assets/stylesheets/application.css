@@ -169,6 +169,13 @@ header {
   width: 150px;
 }
 
+.logo-promo {
+  display: block;
+  height: 2em;
+  margin: auto;
+  padding: .25em;
+}
+
 main {
   background-color: rgba(255, 255, 255, 1);
   background-color: hsla(360, 100%, 100%, 1);
@@ -214,4 +221,14 @@ main {
   text-align: center;
   vertical-align: middle;
   width: 50%;
+}
+
+.welcome_message p {
+  margin-top: 2em;
+}
+
+.welcome_message ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }

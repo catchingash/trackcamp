@@ -1,9 +1,37 @@
 <div class='welcome_message'>
   <h1>Welcome To TrackCamp!</h1>
+  <p>
+    TrackCamp is a platform to track your life
+    and see what really matters for you.
+  </p>
+  <p>
+    <strong>We are not the averages of our peers.</strong>
+    Every single one of us is unique, and we will respond to some things
+    more than others. When trying to gain insight and make decisions
+    about what affects <em>your</em> health and wellbeing,
+    it can be easy to feel overwhelmed and powerless.
+    TC is a tool to help individuals organize data about themselves,
+    so that they can build a better user's manual for their bodies.
+  </p>
 
+  <p>With TrackCamp, you can:
+    <ul>
+      <li>Automatically record your activities with <%= link_to 'Google Fit', 'https://fit.google.com/'%></li>
+      <li>Seamlessly track your weight with <%= link_to 'Google Fit', 'https://fit.google.com/'%></li>
+      <li>Track your sleep with <%= link_to 'Sleep Bot', 'https://mysleepbot.com/' %></li>
+      <li>Manually track events, like your energy levels or mood</li>
+      <li>Graph your data together, to see what really matters</li>
+    </ul>
+  </p>
+
+  <p>To get started:</p>
   <%= link_to image_tag('signin_google.png', class: 'signin-google'), login_path(:google_oauth2) %>
 
   <% if Rails.env.development? %>
     <p>Developers: <%= link_to 'log in with Developer Strategy', login_path(:developer) %></p>
   <% end %>
+
+  Integrates with:
+    <%= link_to image_tag('logo_googlefit.png', class: 'logo-promo'), 'https://fit.google.com/' %>
+    <%= link_to image_tag('logo_sleepbot.png', class: 'logo-promo'), 'https://mysleepbot.com/' %>
 </div>
