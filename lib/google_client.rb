@@ -128,11 +128,11 @@ class GoogleClient
   end
 
   def self.weight_uri(started_at)
-    ended_at = DateHelpers.beginning_of_today
-    raise "Start (#{started_at}) is after end (#{ended_at})." if started_at > ended_at
+    ended_at = DateHelpers.beginning_of_today.to_s
+    raise "Start (#{started_at}) is after end (#{ended_at})." if started_at.to_s > ended_at
 
     uri = 'https://www.googleapis.com/fitness/v1/users/me/dataSources/raw:com.google.weight:com.google.android.apps.fitness:user_input/datasets/'
-    uri += started_at.to_s + '000000-' + ended_at.to_s + '000000'
+    uri += started_at.to_s + '000000-' + ended_at + '000000'
 
     URI(uri)
   end

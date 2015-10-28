@@ -34,6 +34,6 @@ class Event < ActiveRecord::Base
 
   def self.last_weight_date(user_id, event_type_id)
     Event.where(user_id: user_id, event_type_id: event_type_id)
-      .maximum('time') || DateHelpers.thirty_one_days_ago
+      .maximum('time') || '000000000000000000'
   end
 end
