@@ -83,7 +83,7 @@ tc.Event.prototype.lineGraph = function(data_points) {
     yAxis: {
       title: { text: 'Number/Rating' },
       labels: {
-        formatter: function () {
+        formatter: function() {
           return this.value;
         }
       }
@@ -91,8 +91,8 @@ tc.Event.prototype.lineGraph = function(data_points) {
     tooltip: {
       headerFormat: '<b>{series.name}</b><br>',
       // Tue, Oct 27 at 9:58 AM
-      // 139
-      pointFormat: '{point.x:%a, %b %d at %l:%M %p}<br>{point.y:.0f}<br>{point.note}'
+      // 139.50
+      pointFormat: '{point.x:%a, %b %d at %l:%M %p}<br>{point.y:.2f}<br>{point.note}'
     },
     plotOptions: {
       area: { fillOpacity: 0.5 },
