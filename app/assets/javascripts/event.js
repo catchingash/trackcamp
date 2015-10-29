@@ -20,8 +20,8 @@ tc.Event.prototype.handleClick = function(event) {
   var graphType = btn.attr('data-graphType');
   this.formatMethod = this['formatDataFor_' + graphType];
   this.graphMethod = this[graphType];
-  this.graphContainer = $('<div class="graph event event-' + graphType + ' event-' + this.eventType + '">');
-  this.graph = $('.graph.event-' + this.eventType);
+  this.graphContainer = $('<div class="graph event event-' + graphType + ' event-' + this.eventType.replace(/ /g, '_') + '">');
+  this.graph = $('.graph.event-' + this.eventType.replace(/ /g, '_'));
 
   this.toggleGraph();
 }
@@ -43,7 +43,7 @@ tc.Event.prototype.createGraph = function() {
     var formattedData = this.formatMethod(tc.dataRepo.events[this.eventType]);
     this.graphMethod(formattedData);
   } else {
-    var url = '/events?event_type=' + this.eventType;
+    var url = '/events?event_type=' + this.eventType.replace(/_/g, ' ');
 
     $.ajax({ url: url,
       method: 'GET',

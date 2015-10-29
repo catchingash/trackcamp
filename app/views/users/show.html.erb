@@ -19,7 +19,7 @@
     <%# end %>
 
     <% @user.event_types.each do |event_type| %>
-      <li class="<%= "btn btn-graph event event-#{event_type.name}-lineGraph" %>"
+      <li class="<%= "btn btn-graph event event-#{event_type.name.gsub(' ', '_')}-lineGraph" %>"
         data-graphType='lineGraph'
         data-eventType='<%= event_type.name %>'
       >
