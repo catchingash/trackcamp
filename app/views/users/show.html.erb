@@ -20,8 +20,8 @@
 
     <% @user.event_types.each do |event_type| %>
       <li class="<%= "btn btn-graph event event-#{event_type.name}-lineGraph" %>"
-        data-graphType=<%= 'lineGraph' %>
-        data-eventType=<%= "#{event_type.name}" %>
+        data-graphType='lineGraph'
+        data-eventType='<%= event_type.name %>'
       >
         <%= event_type.name.titlecase %>
         <span class='icon-toggle'>✓</span>
