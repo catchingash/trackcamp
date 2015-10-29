@@ -15,15 +15,16 @@
 
     <ul class='header_nav'>
       <% if signed_in? %>
-        <li><span class='add_new'>+</span>
+        <li>
+          <%= link_to '+ Event', new_event_path %>
+        </li>
+
+        <li><span class='icon-settings'>⚙</span>
             <ul>
-              <li><%= link_to 'New Event', new_event_path %></li>
               <li><%= link_to 'New Event Category', new_event_type_path %></li>
               <li><%= link_to 'Upload Sleep Data', new_sleep_path %></li>
             </ul>
         </li>
-
-        <!-- <li><%= link_to 'Activities', activities_path %></li> -->
 
         <li><%= @user.email %>
           <ul>
@@ -49,10 +50,8 @@
   <script src="http://code.highcharts.com/highcharts.js"></script>
   <script>
     Highcharts.setOptions({
-      global : {
-        // this is for all plots, change Date axis to local timezone
-        useUTC: false
-      }
+      // this is for all plots, change Date axis to local timezone
+      global : { useUTC: false }
     });
   </script>
 
