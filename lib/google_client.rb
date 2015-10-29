@@ -4,7 +4,6 @@ require_relative './date_helpers'
 class GoogleClient
   def self.weights(params)
     auth_token = fetch_new_auth_token(params[:refresh_token])
-    raise 'Auth token fetch failed. Refresh token expired?' if auth_token.nil?
 
     uri = weight_uri(params[:started_at])
     http = Net::HTTP.new(uri.host, uri.port)
@@ -19,7 +18,7 @@ class GoogleClient
     if response.code == '200'
       return format_weights(JSON.parse(response.body))
     else
-      raise "Google Fit weight API error: #{response.body}"
+      fail "Google Fit weight API error: #{response.body}"
     end
 
   rescue StandardError => e
@@ -29,10 +28,9 @@ class GoogleClient
 
   def self.fit_segments(params)
     ended_at = DateHelpers.beginning_of_today
-    raise "Start (#{params[:started_at]}) is after end (#{ended_at})." if params[:started_at] > ended_at
+    fail "Start (#{params[:started_at]}) is after end (#{ended_at})." if params[:started_at] > ended_at
 
     auth_token = fetch_new_auth_token(params[:refresh_token])
-    raise 'Auth token fetch failed. Refresh token expired?' if auth_token.nil?
 
     uri = URI('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate')
     http = Net::HTTP.new(uri.host, uri.port)
@@ -61,7 +59,7 @@ class GoogleClient
     if response.code == '200'
       return format_fit_segments(JSON.parse(response.body))
     else
-      raise "Google Fit Segments API error: #{response.body}"
+      fail "Google Fit Segments API error: #{response.body}"
     end
 
   rescue StandardError => e
@@ -91,8 +89,11 @@ class GoogleClient
 
     response = http.request(req)
     response = JSON.parse(response.body)
+    auth_token = response['access_token']
 
-    response['access_token']
+    fail 'Auth token fetch failed. Refresh token expired?' if auth_token.nil?
+
+    auth_token
   end
 
   # FIXME: change to a map!
@@ -129,7 +130,7 @@ class GoogleClient
 
   def self.weight_uri(started_at)
     ended_at = DateHelpers.beginning_of_today.to_s
-    raise "Start (#{started_at}) is after end (#{ended_at})." if started_at.to_s > ended_at
+    fail "Start (#{started_at}) is after end (#{ended_at})." if started_at.to_s > ended_at
 
     uri = 'https://www.googleapis.com/fitness/v1/users/me/dataSources/raw:com.google.weight:com.google.android.apps.fitness:user_input/datasets/'
     uri += started_at.to_s + '000000-' + ended_at + '000000'
