@@ -42,7 +42,8 @@ RSpec.describe SessionsController, type: :controller do
     context 'when user has no google fit data' do
       before :each do
         # doing this rather than maintaining a VCR because this isn't what the code is testing.
-        allow(GoogleClient).to receive(:fit_segments) { false }
+        allow(GoogleClient).to receive(:fetch_activities) { false }
+        allow(GoogleClient).to receive(:fetch_weights) { false }
       end
 
       it 'does not require login' do

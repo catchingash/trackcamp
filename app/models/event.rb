@@ -19,7 +19,7 @@ class Event < ActiveRecord::Base
     event_type = EventType.find_or_create_by(user_id: user_id, name: 'Weight')
 
     google_params[:started_at] = last_weight_date(user_id, event_type.id)
-    weights = GoogleClient.weights(google_params)
+    weights = GoogleClient.fetch_weights(google_params)
     return unless weights
 
     weights.each do |weight_params|

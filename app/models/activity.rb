@@ -9,7 +9,7 @@ class Activity < ActiveRecord::Base
   validates :user, presence: true # maintains referential integrity
 
   def self.update_new(user_id, google_params)
-    activities = GoogleClient.fit_segments(google_params)
+    activities = GoogleClient.fetch_activities(google_params)
     return unless activities
 
     activities.each do |activity_params|

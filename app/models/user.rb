@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   def google_fit_params
     {
       refresh_token: refresh_token,
-      started_at: last_activity_date || DateHelpers.thirty_one_days_ago
+      started_at: last_activity_date || '000000000000000000'
     }
   end
 
