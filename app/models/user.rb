@@ -26,11 +26,11 @@ class User < ActiveRecord::Base
   end
 
   # for use in the API response
-  def events_by_type(event_type)
+  def events_of_type(event_type)
     event_type = EventType.find_by(name: event_type)
     return unless event_type
 
-    events.order(:time).where(event_type_id: event_type.id).map do |event|
+    events.where(event_type_id: event_type.id).order(:time).map do |event|
       {
         time: event.time,
         rating: event.rating,
@@ -38,6 +38,39 @@ class User < ActiveRecord::Base
         event_type: event_type.name
       }
     end
+  end
+
+  # for use in the API response
+  def events_by_type
+    events_hash = {}
+    events_array = []
+
+    events.includes(:event_type).order(:time).each do |event|
+      event_type = event.event_type
+      event_hash = {
+        time: event.time,
+        rating: event.rating,
+        note: event.note,
+        event_type: event_type.name
+      }
+
+      if events_hash[event_type.name]
+        events_hash[event_type.name].push(event_hash)
+      else
+        events_hash[event_type.name] = [event_hash]
+      end
+    end
+
+    events_hash.each do |event_name, event_array|
+      event_hash = {
+        event_type: event_name,
+        points: event_array
+      }
+
+      events_array.push(event_hash)
+    end
+
+    events_array
   end
 
   private

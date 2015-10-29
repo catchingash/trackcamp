@@ -5,9 +5,9 @@ class EventsController < ApplicationController
 
   def index
     if params[:event_type]
-      render json: @user.events_by_type(params[:event_type]).as_json, status: :ok
+      render json: @user.events_of_type(params[:event_type]).as_json, status: :ok
     else
-      render json: @user.events.order(:time).as_json, status: :ok
+      render json: @user.events_by_type.as_json, status: :ok
     end
   end
 
