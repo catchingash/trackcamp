@@ -78,6 +78,7 @@ tc.Event.prototype.lineGraph = function(data_points) {
     chart: { zoomType: 'x' },
     title: { text: this.eventType },
     xAxis: {
+      events: { setExtremes: tc.syncExtremes },
       type: 'datetime',
       labels: { format: '{value:%a<br>%b %d}' }
     },

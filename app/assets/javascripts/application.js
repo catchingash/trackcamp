@@ -23,3 +23,15 @@ $(document).ready(function() {
   new tc.Sleep();
   new tc.Event();
 });
+
+tc.syncExtremes = function(e) {
+  var thisChart = this.chart;
+
+  Highcharts.each(Highcharts.charts, function (chart) {
+    if (chart !== thisChart) {
+      if (chart.xAxis[0].setExtremes) { // It is null while updating
+        chart.xAxis[0].setExtremes(e.min, e.max);
+      }
+    }
+  });
+}

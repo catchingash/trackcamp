@@ -104,6 +104,7 @@ tc.Activity.prototype.sharkFins = function(activity_series) {
     chart: { zoomType: 'x' },
     title: { text: 'Activities (Minutes Per Session)' },
     xAxis: {
+      events: { setExtremes: tc.syncExtremes },
       type: 'datetime',
       // 12 AM
       // Oct 02
@@ -169,6 +170,7 @@ tc.Activity.prototype.lineGraph = function(duration_series) {
     chart: { zoomType: 'x' },
     title: { text: 'Activities (Minutes Per Day)' },
     xAxis: {
+      events: { setExtremes: tc.syncExtremes },
       type: 'datetime',
       // Fri
       // Oct 02
