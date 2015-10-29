@@ -146,13 +146,6 @@ header {
   height: 1em;
 }
 
-.icon-ssl {
-  display: inline-block;
-  height: 3em;
-  vertical-align: middle;
-  padding-bottom: 1em;
-}
-
 .icon-toggle {
   color: rgba(52, 148, 178, 1);
   color: hsla(194, 55%, 45%, 1);
