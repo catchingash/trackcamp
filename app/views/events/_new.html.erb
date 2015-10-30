@@ -1,0 +1,19 @@
+<%= form_for Event.new, html: { class: 'new_event hidden' } do |f| %>
+  <h2>Add Event</h2>
+
+  <div>
+    <%= collection_select :event, :event_type_id, @user.event_types, :id, :name, { prompt: 'What kind of event?' }, { required: true } %>
+    <%= f.number_field :rating, step: 0.01, placeholder: 'Rating' %>
+  </div>
+
+  <div>
+    <%= f.datetime_local_field :time, required: true, min: '2010-01-01T00:00', value: Time.current.strftime('%Y-%m-%dT%R') %>
+    <a href='#' class='tooltip'><%= image_tag('info_icon.png', class: 'info-icon', alt: '(info)') %><span>This is in <%= @user.time_zone %>.</span></a>
+  </div>
+
+  <div>
+  <%= f.text_area :note, placeholder: 'Any details?' %>
+  </div>
+
+  <%= f.submit %>
+<% end %>

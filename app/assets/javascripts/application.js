@@ -22,6 +22,12 @@ $(document).ready(function() {
   new tc.Activity();
   new tc.Sleep();
   new tc.Event();
+
+  $('.btn.new-event').click(function(event) {
+    $('form.new_event').toggleClass('hidden');
+    $(event.target).toggleClass('active');
+  });
+  });
 });
 
 tc.syncExtremes = function(e) {

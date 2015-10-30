@@ -14,12 +14,12 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show, :destroy]
   resources :event_types, only: [:new, :create]
-  resources :events, only: [:new, :create]
+  resources :events, only: [:create]
   resources :sleep, only: [:index, :new, :create]
 
   # API routes
   resources :activities, only: :index
   get '/events', to: 'events#index'
-  patch '/events/:id', to: 'events#update'
+  # patch '/events/:id', to: 'events#update'
   patch '/event_types/:id', to: 'event_types#update'
 end

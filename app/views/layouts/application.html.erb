@@ -15,9 +15,8 @@
 
     <ul class='header_nav'>
       <% if signed_in? %>
-        <li>
-          <%= link_to '+ Event', new_event_path %>
-        </li>
+        <li class='btn new-event'>+ Event</li>
+        <%= render 'events/new' %>
 
         <li><span class='icon-settings'>⚙</span>
             <ul>
