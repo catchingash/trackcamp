@@ -1,6 +1,6 @@
 window.tc = window.tc || {};
 
-tc.Activity = function(graphType) {
+tc.Activity = function() {
   $('.btn-graph.activity').click(this.handleClick.bind(this));
 
   this.formatMethod;
@@ -51,7 +51,6 @@ tc.Activity.prototype.createGraph = function() {
   }
 }
 
-// NOTE: see below for example
 tc.Activity.prototype.formatDataFor_sharkFins = function(activities) {
   var formatted = [];
 
@@ -139,7 +138,8 @@ tc.Activity.prototype.formatDataFor_lineGraph = function(activities) {
     var activity = activities[i];
     var duration = (activity.ended_at - activity.started_at); // in milliseconds
     var time = new Date(activity.started_at);
-    var day = new Date(time.getFullYear(), time.getMonth(), time.getDate(), 12).valueOf(); // selects noon on that day, in milliseconds since epoch
+    // selects noon on that day, in milliseconds since epoch
+    var day = new Date(time.getFullYear(), time.getMonth(), time.getDate(), 12).valueOf();
 
     if (sums[day]) {
       sums[day] += duration;
@@ -154,7 +154,8 @@ tc.Activity.prototype.formatDataFor_lineGraph = function(activities) {
   // format times for the graph: [[date, duration], ... , [date, duration]]
   for (var i = 0; i < times.length; i++) {
     var time = times[i];
-    var data_point = [parseInt(time), Math.round(sums[time]/60000)]; // [ date, duration (rounded to the nearest minute) ]
+    // duration (rounded to the nearest minute)
+    var data_point = [parseInt(time), Math.round(sums[time]/60000)];
     duration_series.push(data_point);
   }
 
@@ -212,28 +213,3 @@ tc.Activity.prototype.lineGraph = function(duration_series) {
     }]
   });
 }
-
-// // result of tc.Activity.prototype.formatDataForSharkFins:
-// [
-//   {
-//     name: 'Walking',
-//     data: [
-//       [1443642605000, 0],
-//       [1443645944000, 55],
-//       [1443645944001, null],
-//       [1443665371000, 0],
-//       [1443666716000, 22],
-//     ]
-//   },
-//   {
-//     name: 'Calisthenics',
-//     data: [
-//       [1443642303000, 0],
-//       [1443642303000, 8],
-//       [1443642303001, null],
-//       [1443656383000, 0]
-//       [1443656383000, 20]
-//       [1443656383001, null]
-//     ]
-//   }
-// ]

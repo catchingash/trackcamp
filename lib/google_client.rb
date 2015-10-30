@@ -85,8 +85,8 @@ class GoogleClient
         # trims 'derived:com.google.activity.segment:'
         data_source: record['originDataSourceId'][36..-1],
         activity_type_id:
-          id_map.fetch(google_id) do |google_id|
-            id_map[google_id] = ActivityType.find_by(google_id: google_id).id
+          id_map.fetch(google_id) do |id|
+            id_map[id] = ActivityType.find_by(google_id: id).id
           end
       }
 

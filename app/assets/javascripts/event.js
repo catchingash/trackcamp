@@ -1,6 +1,6 @@
 window.tc = window.tc || {};
 
-tc.Event = function(graphType) {
+tc.Event = function() {
   $('.btn-graph.event').click(this.handleClick.bind(this));
 
   this.formatMethod;
@@ -56,7 +56,6 @@ tc.Event.prototype.createGraph = function() {
   }
 }
 
-// [ { "time":1445951700000, "rating":138.6, "note":"", "event_type":"weight" } ]
 tc.Event.prototype.formatDataFor_lineGraph = function(events) {
   var data_points = []
 
@@ -97,7 +96,7 @@ tc.Event.prototype.lineGraph = function(data_points) {
       pointFormat: '{point.x:%a, %b %d at %l:%M %p}<br>{point.y:.2f}<br>{point.note}'
     },
     plotOptions: {
-      area: { fillOpacity: 0.5 },
+      area: { fillOpacity: 0.5 }
     },
     credits: { enabled: false },
     series: [{

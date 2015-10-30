@@ -1,6 +1,6 @@
 window.tc = window.tc || {};
 
-tc.Sleep = function(graphType) {
+tc.Sleep = function() {
   $('.btn-graph.sleep').click(this.handleClick.bind(this));
 
   this.formatMethod;
@@ -51,7 +51,6 @@ tc.Sleep.prototype.createGraph = function() {
   }
 }
 
-// NOTE: see below for example
 tc.Sleep.prototype.formatDataFor_sharkFins = function(sleeps) {
   var formatted = [{
     type: 'area',
@@ -64,10 +63,13 @@ tc.Sleep.prototype.formatDataFor_sharkFins = function(sleeps) {
 
     // format the data in the way that Highcharts wants
     var data1 = [ sleep.started_at, 0]
-    var data2 = [ sleep.ended_at, (sleep.ended_at - sleep.started_at)/3600000 ] // y-value = sleep duration in hours. // NOTE: 3600000 ms == 1 hour
-    var data3 = [ sleep.ended_at + 1, null ] // this makes the graph line break after this sleep
+    // y-value = sleep duration in hours. // NOTE: 3600000 ms == 1 hour
+    var data2 = [ sleep.ended_at, (sleep.ended_at - sleep.started_at)/3600000 ]
+    // this makes the graph line break after this sleep
+    var data3 = [ sleep.ended_at + 1, null ]
 
-    // add the formatted data to the correct index position (where the matching sleep type is located)
+    // add the formatted data to the correct index position
+    // (where the matching sleep type is located)
     formatted[0].data.push(data1);
     formatted[0].data.push(data2);
     formatted[0].data.push(data3);
@@ -190,15 +192,3 @@ tc.Sleep.prototype.lineGraph = function(duration_series) {
     }]
   });
 }
-
-// // result of tc.Sleep.prototype.formatDataForSharkFins:
-// [{
-//   name: 'Sleep',
-//   data: [
-//     [1443642605000, 0],
-//     [1443645944000, 0.9275],
-//     [1443645944001, null],
-//     [1443665371000, 0],
-//     [1443666716000, 0.37361111111],
-//   ]
-// }]

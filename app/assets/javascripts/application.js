@@ -23,7 +23,7 @@ $(document).ready(function() {
   new tc.Sleep();
   new tc.Event();
 
-  $('.btn.new-event, form.new-event.popup .btn-close').click(function(event) {
+  $('.btn.new-event, form.new-event.popup .btn-close').click(function() {
     $('form.new-event').toggleClass('hidden');
     $('.btn.new-event').toggleClass('active');
   });
@@ -35,17 +35,17 @@ $(document).ready(function() {
   $('form.new-sleep .btn-close').click(tc.toggleNewSleepForm);
 });
 
-tc.toggleNewEventTypeForm = function(e) {
+tc.toggleNewEventTypeForm = function() {
   $('form.new-event-type').toggleClass('hidden');
   $('.icon-settings').parent().toggleClass('active');
 }
 
-tc.toggleNewSleepForm = function(e) {
+tc.toggleNewSleepForm = function() {
   $('form.new-sleep').toggleClass('hidden');
   $('.icon-settings').parent().toggleClass('active');
 }
 
-tc.syncExtremes = function(e) {
+tc.syncExtremes = function() {
   var thisChart = this.chart;
 
   Highcharts.each(Highcharts.charts, function (chart) {
