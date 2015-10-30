@@ -2,38 +2,36 @@ require 'net/http'
 require_relative './date_helpers'
 
 class GoogleClient
-  def self.fetch_weights(params)
-    uri = weight_uri(params[:started_at])
-    response = new_get_request(uri, params[:refresh_token])
-    format_weights(response)
+  def self.handle_failed_api_calls
+    begin
+      yield
+    rescue StandardError => e
+      Rails.logger.debug e
+      puts e
+    end
+  end
 
-  rescue StandardError => e
-    Rails.logger.debug e
-    puts e
+  def self.fetch_weights(params)
+    handle_failed_api_calls do
+      uri = weight_uri(params[:started_at])
+      response = new_get_request(uri, params[:refresh_token])
+      format_weights(response)
+    end
   end
 
   def self.fetch_activities(params)
-    uri = activity_uri(params[:started_at])
-    response = new_get_request(uri, params[:refresh_token])
-    format_activities(response)
-
-  rescue StandardError => e
-    Rails.logger.debug e
-    puts e
+    handle_failed_api_calls do
+      uri = activity_uri(params[:started_at])
+      response = new_get_request(uri, params[:refresh_token])
+      format_activities(response)
+    end
   end
 
   private
 
   # OPTIMIZE: could cache the auth token
   def self.fetch_new_auth_token(refresh_token)
-    uri = URI('https://www.googleapis.com/oauth2/v3/token')
-    params = {
-      refresh_token: refresh_token,
-      client_id: ENV['GOOGLE_OAUTH_CLIENT_ID'],
-      client_secret: ENV['GOOGLE_CLIENT_SECRET'],
-      grant_type: 'refresh_token'
-    }
-    uri.query = URI.encode_www_form(params)
+    uri = auth_token_uri(refresh_token)
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
@@ -70,7 +68,6 @@ class GoogleClient
     end
   end
 
-  # FIXME: change to a map!
   def self.format_activities(data)
     id_map = {}
     activities = []
@@ -102,6 +99,18 @@ class GoogleClient
         rating: kg_to_lbs(record['value'][0]['fpVal'])
       }
     end
+  end
+
+  def self.auth_token_uri(refresh_token)
+    uri = URI('https://www.googleapis.com/oauth2/v3/token')
+    params = {
+      refresh_token: refresh_token,
+      client_id: ENV['GOOGLE_OAUTH_CLIENT_ID'],
+      client_secret: ENV['GOOGLE_CLIENT_SECRET'],
+      grant_type: 'refresh_token'
+    }
+    uri.query = URI.encode_www_form(params)
+    uri
   end
 
   def self.weight_uri(started_at)
