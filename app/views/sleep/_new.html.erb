@@ -1,0 +1,25 @@
+<%= form_tag sleep_index_path, { multipart: true, class: 'new-sleep hidden popup' } do %>
+  <h2>Upload Sleep Data<span class='btn-close'>x</span></h2>
+
+  <div>
+    <label> Upload Sleep Bot CSV:
+    <%= file_field_tag :file, accept: 'text/csv', required: true %>
+    </label>
+    <a href='#' class='tooltip'>
+      <%= image_tag('info_icon.png', class: 'info-icon', alt: '(info)') %>
+      <span>Please go to Sleep Bot to export your data as a CSV.
+        <strong>Before exporting your data</strong>, be sure to select the
+        appropriate time ranges at the top of the page.
+      </span>
+    </a>
+  </div>
+
+  <div>
+    <%= collection_select :time_zone, :utc_offset,
+      ActiveSupport::TimeZone.all, :formatted_offset, :to_s,
+      { prompt: 'Select Time Zone' }, { required: true }
+    %>
+  </div>
+
+  <%= submit_tag 'Import' %>
+<% end %>

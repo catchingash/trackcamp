@@ -23,17 +23,25 @@ $(document).ready(function() {
   new tc.Sleep();
   new tc.Event();
 
-  $('.btn.new-event').click(function(event) {
-    $('form.new_event').toggleClass('hidden');
-    $(event.target).toggleClass('active');
+  $('.btn.new-event, form.new-event.popup .btn-close').click(function(event) {
+    $('form.new-event').toggleClass('hidden');
+    $('.btn.new-event').toggleClass('active');
   });
 
   $('.btn.new-event-type').click(tc.toggleNewEventTypeForm);
-  $('form.popup .btn-close').click(tc.toggleNewEventTypeForm);
+  $('form.new-event-type.popup .btn-close').click(tc.toggleNewEventTypeForm);
+
+  $('.btn.new-sleep').click(tc.toggleNewSleepForm);
+  $('form.new-sleep .btn-close').click(tc.toggleNewSleepForm);
 });
 
 tc.toggleNewEventTypeForm = function(e) {
-  $('form.new_event_type').toggleClass('hidden');
+  $('form.new-event-type').toggleClass('hidden');
+  $('.icon-settings').parent().toggleClass('active');
+}
+
+tc.toggleNewSleepForm = function(e) {
+  $('form.new-sleep').toggleClass('hidden');
   $('.icon-settings').parent().toggleClass('active');
 }
 

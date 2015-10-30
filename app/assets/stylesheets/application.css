@@ -222,6 +222,10 @@ form.popup {
   z-index: 1000;
 }
 
+form.popup.new-sleep {
+  max-width: 20em;
+}
+
 form.popup h2 {
   font-size: 1.5em;
   margin: 0 0 .67em 0;
@@ -261,6 +265,10 @@ form.popup input {
 
 form.popup input[type='submit'] {
   float: right;
+}
+
+form.popup input[type='file'] {
+  max-width: 17em;
 }
 
 form.popup textarea {
