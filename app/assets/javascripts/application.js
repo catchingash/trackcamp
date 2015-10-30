@@ -45,7 +45,7 @@ tc.toggleNewSleepForm = function() {
   $('.icon-settings').parent().toggleClass('active');
 }
 
-tc.syncExtremes = function() {
+tc.syncExtremes = function(e) {
   var thisChart = this.chart;
 
   Highcharts.each(Highcharts.charts, function (chart) {
