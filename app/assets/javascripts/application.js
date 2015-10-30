@@ -27,8 +27,15 @@ $(document).ready(function() {
     $('form.new_event').toggleClass('hidden');
     $(event.target).toggleClass('active');
   });
-  });
+
+  $('.btn.new-event-type').click(tc.toggleNewEventTypeForm);
+  $('form.popup .btn-close').click(tc.toggleNewEventTypeForm);
 });
+
+tc.toggleNewEventTypeForm = function(e) {
+  $('form.new_event_type').toggleClass('hidden');
+  $('.icon-settings').parent().toggleClass('active');
+}
 
 tc.syncExtremes = function(e) {
   var thisChart = this.chart;

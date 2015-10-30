@@ -206,23 +206,32 @@ main {
   width: 75%;
 }
 
-/* new event form */
-form.new_event {
+/* popup forms */
+form.popup {
   background-color: white;
   border-radius: 2px;
   box-shadow: 0px 0px 8px 4px #666;
   padding: 1em;
   position: absolute;
   text-align: left;
-  z-index: 5000;
+  z-index: 1000;
 }
 
-form.new_event h2 {
+form.popup h2 {
   font-size: 1.5em;
   margin: 0 0 .67em 0;
 }
 
-form.new_event div {
+form.popup .btn-close {
+  color: gray;
+  cursor: pointer;
+  float: right;
+  font-size: .5em;
+  margin-left: 1em;
+  position: relative;
+}
+
+form.popup div {
   margin: 1em 0;
 }
 
@@ -236,20 +245,25 @@ form.new_event div {
   width: 7em;
 }
 
-form.new_event input {
+#event_type_name {
+  margin: auto;
+  width: 97%;
+}
+
+form.popup input {
   font-size: 1em;
 }
 
-form.new_event input[type='submit'] {
+form.popup input[type='submit'] {
   float: right;
 }
 
-form.new_event textarea {
+form.popup textarea {
   font-size: 1em;
   height: 2.5em;
   width: 98%;
 }
-/* end new event form */
+/* end popup forms */
 
 .signin-google {
   height: 3em;

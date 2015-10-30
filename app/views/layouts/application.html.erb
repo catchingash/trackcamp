@@ -20,10 +20,11 @@
 
         <li><span class='icon-settings'>⚙</span>
             <ul>
-              <li><%= link_to 'New Event Category', new_event_type_path %></li>
+              <li class='btn new-event-type'>New Event Category</li>
               <li><%= link_to 'Upload Sleep Data', new_sleep_path %></li>
             </ul>
         </li>
+        <%= render 'event_types/new' %>
 
         <li><%= @user.email %>
           <ul>

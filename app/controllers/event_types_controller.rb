@@ -28,36 +28,34 @@ class EventTypesController < ApplicationController
   def create
     @event_type = EventType.new(create_params)
     @event_type.user_id = session[:user_id]
+    @event_type.save # TODO: fail with an error message
 
-    if @event_type.save
-      redirect_to user_path(session[:user_id])
-    else
-      render :new
-    end
+    redirect_to user_path(session[:user_id])
   end
 
-  def update
-    event_type = EventType.find_by(id: params[:id], user_id: session[:user_id])
+  # # ajax update
+  # def update
+  #   event_type = EventType.find_by(id: params[:id], user_id: session[:user_id])
 
-    if event_type.nil?
-      status = 404
-      raise 'Failed event type update. ' +
-        "Params: #{params}. Session user_id: #{session[:user_id]}."
-    elsif event_type.update(create_params)
-      body = event_type
-      status = 200
-    else
-      body = event_type.errors
-      status = 400
-      raise 'Failed event type creation. ' +
-        "Params: #{params}. Errors: #{event_type.errors}."
-    end
+  #   if event_type.nil?
+  #     status = 404
+  #     raise 'Failed event type update. ' +
+  #       "Params: #{params}. Session user_id: #{session[:user_id]}."
+  #   elsif event_type.update(create_params)
+  #     body = event_type
+  #     status = 200
+  #   else
+  #     body = event_type.errors
+  #     status = 400
+  #     raise 'Failed event type creation. ' +
+  #       "Params: #{params}. Errors: #{event_type.errors}."
+  #   end
 
-  rescue StandardError => e
-    Rails.logger.debug e
-  ensure
-    render json: body.as_json, status: status
-  end
+  # rescue StandardError => e
+  #   Rails.logger.debug e
+  # ensure
+  #   render json: body.as_json, status: status
+  # end
 
   private
 

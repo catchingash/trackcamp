@@ -1,0 +1,9 @@
+<%= form_for EventType.new, html: { class: 'new_event_type hidden popup' } do |f| %>
+  <h2>Add Event Category<span class='btn-close'>x</span></h2>
+
+  <div>
+    <%= f.text_field :name, placeholder: 'Category Name', required: true %>
+  </div>
+
+  <%= f.submit 'Create Event Category' %>
+<% end %>
