@@ -9,14 +9,12 @@
       Activities: By Day<span class='icon-toggle'>✓</span>
     </li>
 
-    <%# if @user.sleep.any? %>
-      <li class='btn btn-graph sleep sleep-sharkFins' data-graphType='sharkFins'>
-        Sleep: By Session<span class='icon-toggle'>✓</span>
-      </li>
-      <li class='btn btn-graph sleep sleep-lineGraph' data-graphType='lineGraph'>
-        Sleep: By Day<span class='icon-toggle'>✓</span>
-      </li>
-    <%# end %>
+    <li class='btn btn-graph sleep sleep-sharkFins' data-graphType='sharkFins'>
+      Sleep: By Session<span class='icon-toggle'>✓</span>
+    </li>
+    <li class='btn btn-graph sleep sleep-lineGraph' data-graphType='lineGraph'>
+      Sleep: By Day<span class='icon-toggle'>✓</span>
+    </li>
 
     <% @user.event_types.each do |event_type| %>
       <li class="<%= "btn btn-graph event event-#{event_type.name.gsub(' ', '_')}-lineGraph" %>"
@@ -30,7 +28,7 @@
   </ul>
 </div>
 
-<main>
+<main class='dashboard'>
   <div class='graphs'>
     <!-- graphs will be appended here -->
   </div>

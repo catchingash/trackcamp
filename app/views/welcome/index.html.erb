@@ -1,35 +1,41 @@
-<div class='welcome_message'>
-  <h1>Welcome To TrackCamp!</h1>
+<main class='welcome_message'>
+  <h1>Welcome to TrackCamp!</h1>
   <p>
     TrackCamp is a platform to track your life
     and see what really matters for you.
   </p>
   <p>
     <strong>We are not the averages of our peers.</strong>
-    Every single one of us is unique, and we will respond to some things
-    more than others. When trying to gain insight and make decisions
-    about what affects <em>your</em> health and wellbeing,
-    it can be easy to feel overwhelmed and powerless.
-    TC is a tool to help individuals organize data about themselves,
-    so that they can build a better user's manual for their bodies.
+    Every one of us is unique, and TC is a tool to help organize data about
+    you, so you can build a better user's manual for <em>your</em> body.
   </p>
 
-  <p>With TrackCamp, you can:
+  <p><strong>Features:</strong>
     <ul>
       <li>
-        Automatically record your activities with
-        <%= link_to 'Google Fit', 'https://fit.google.com/'%>
+        <strong>Automatically record your activities with
+          <%= link_to 'Google Fit', 'https://fit.google.com/'%>
+          <%= link_to image_tag('logo_googlefit.png', class: 'logo-promo'),
+          'https://fit.google.com/' %>
+        </strong>
       </li>
       <li>
-        Seamlessly track your weight with
-        <%= link_to 'Google Fit', 'https://fit.google.com/'%>
+        <strong>Seamlessly track your weight with
+          <%= link_to 'Google Fit', 'https://fit.google.com/'%>
+        </strong>
       </li>
       <li>
-        Track your sleep with
-        <%= link_to 'Sleep Bot', 'https://mysleepbot.com/' %>
+        <strong> Track your sleep with
+          <%= link_to image_tag('logo_sleepbot.png', class: 'logo-promo'),
+          'https://mysleepbot.com/' %>
+        </strong>
       </li>
-      <li>Manually track events, like your energy levels or mood</li>
-      <li>Graph your data together, to see what really matters</li>
+      <li>
+        <strong>Manually track events, like your energy levels or mood</strong>
+      </li>
+      <li>
+        <strong>Graph your data together, to see what really matters</strong>
+      </li>
     </ul>
   </p>
 
@@ -44,22 +50,9 @@
     </p>
   <% end %>
 
-  <p>Integrates with:
-    <ul>
-      <li>
-        <%= link_to image_tag('logo_googlefit.png', class: 'logo-promo'),
-        'https://fit.google.com/' %>
-      </li>
-      <li>
-        <%= link_to image_tag('logo_sleepbot.png', class: 'logo-promo'),
-        'https://mysleepbot.com/' %>
-      </li>
-    </ul>
-  </p>
-
   <p>
     Trust that your data is secure with SSL!
     <%= image_tag('comodo_secure_100x85_transp.png',
       class: 'icon-ssl', alt: 'Comodo Secure') %>
   </p>
-</div>
+</main>
